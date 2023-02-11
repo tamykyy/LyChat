@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "13131877012",
+    "project_id": "lychat-me",
+    "storage_bucket": "lychat-me.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:13131877012:android:bf3c34f4554535a7308281",
+        "android_client_info": {
+          "package_name": "edu.tamykyy.lychat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "13131877012-o9v88kampua6s4lr5nvsjillvbnrcu4s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.tamykyy.lychat",
+            "certificate_hash": "7300c8b16366c2f97d9c0cce013e26c277275c41"
+          }
+        },
+        {
+          "client_id": "13131877012-b8f7bjcd4cogdv1j5ocd6vtij03rns7l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDE5YEdd3jpIkEI9AE3bqS2RDo_TPHZKto"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "13131877012-b8f7bjcd4cogdv1j5ocd6vtij03rns7l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
