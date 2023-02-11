@@ -48,6 +48,9 @@ dependencies {
     implementation 'com.google.dagger:hilt-android:2.45'
     annotationProcessor 'com.google.dagger:hilt-compiler:2.45'
 
+    // Country code picker
+    implementation 'com.hbb20:ccp:2.7.0'
+
     implementation 'androidx.appcompat:appcompat:1.6.0'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'

@@ -12,6 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="materialButtonStyle">@style/LyChat.Button</item>
     </style>
 
     <style name="Theme.Base.LyChat" parent="Theme.Base.V24.LyChat"/>

@@ -1,2 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+
+    <style name="LyChat.Base.DayNight.Headline3" parent="TextAppearance.MaterialComponents.Headline3">
+        <item name="fontFamily">@font/nunito</item>
+    </style>
+    <style name="LyChat.Base.Headline3" parent="LyChat.Base.DayNight.Headline3"/>
+    <style name="LyChat.Headline3" parent="LyChat.Base.Headline3"/>
+
+    <style name="LyChat.Base.DayNight.Button" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">30dp</item>
+    </style>
+    <style name="LyChat.Button" parent="LyChat.Base.DayNight.Button"/>
+
+</resources>
