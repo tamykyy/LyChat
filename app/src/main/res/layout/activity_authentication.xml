@@ -25,7 +25,7 @@
             android:id="@+id/subtitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Login now to start chatting!"
+            android:text="Start chatting now!"
             android:textSize="17sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -55,6 +55,7 @@
             app:layout_constraintTop_toTopOf="@+id/editTextPhone" />
 
         <EditText
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:id="@+id/editTextPhone"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

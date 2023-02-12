@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.widget.Toolbar;
 
 import java.util.Map;
 
@@ -26,8 +27,9 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
 
         myBinding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in);
         myViewModel = new ViewModelProvider(this).get(SignInViewModel.class);

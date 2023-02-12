@@ -63,6 +63,7 @@ public class PhoneAuthController {
                     if (task.isSuccessful()) {
 //                         Sign in success, update UI with the signed-in user's information
                         Log.d("AAA", "signInWithCredential:success");
+                        Log.d("AAA", "" + task.getResult().getAdditionalUserInfo().isNewUser());
                         signInResultWithMessage.setValue(new AbstractMap.SimpleEntry<>(true, "ok"));
 
                     } else {
