@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 
 import com.hbb20.CountryCodePicker;
+
 
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.tamykyy.lychat.R;
@@ -27,6 +29,7 @@ public class AuthenticationActivity extends AppCompatActivity {
             getSupportActionBar().hide();
         }
 
+
         myBinding = DataBindingUtil.setContentView(this, R.layout.activity_authentication);
         myViewModel = new ViewModelProvider(this).get(AuthenticationViewModel.class);
 
@@ -36,7 +39,14 @@ public class AuthenticationActivity extends AppCompatActivity {
 
         myBinding.signInButton.setOnClickListener(v -> {
             if (countryCodePicker.isValidFullNumber()) {
-                myViewModel.signInButtonListener();
+                myViewModel.sendVerifyingNumber(countryCodePicker.getFullNumberWithPlus(), AuthenticationActivity.this);
+
+                myViewModel.getVerificationResultWithMessage().observe(AuthenticationActivity.this, verificationResult -> {
+                    if (verificationResult.getKey())
+                        startActivity(new Intent(AuthenticationActivity.this, SignInActivity.class));
+                    else
+                        phoneEditText.setError(verificationResult.getValue());
+                });
             } else {
                 phoneEditText.setError("Phone number isn't valid");
             }
