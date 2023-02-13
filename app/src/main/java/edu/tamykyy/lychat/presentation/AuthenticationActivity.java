@@ -18,6 +18,7 @@ import edu.tamykyy.lychat.databinding.ActivityAuthenticationBinding;
 @AndroidEntryPoint
 public class AuthenticationActivity extends AppCompatActivity {
 
+    private static final String VERIFICATION_ID_KEY = "verificationId";
     private ActivityAuthenticationBinding myBinding;
     private AuthenticationViewModel myViewModel;
 
@@ -39,13 +40,16 @@ public class AuthenticationActivity extends AppCompatActivity {
 
         myBinding.signInButton.setOnClickListener(v -> {
             if (countryCodePicker.isValidFullNumber()) {
-                myViewModel.sendVerifyingNumber(countryCodePicker.getFullNumberWithPlus(), AuthenticationActivity.this);
+                myViewModel.sendVerificationCode(countryCodePicker.getFullNumberWithPlus(), AuthenticationActivity.this);
 
-                myViewModel.getVerificationResultWithMessage().observe(AuthenticationActivity.this, verificationResult -> {
-                    if (verificationResult.getKey())
-                        startActivity(new Intent(AuthenticationActivity.this, SignInActivity.class));
-                    else
-                        phoneEditText.setError(verificationResult.getValue());
+                myViewModel.getVerificationResultModel().observe(AuthenticationActivity.this, verificationResult -> {
+                    if (verificationResult.isCodeSent())
+                        startActivity(new Intent(AuthenticationActivity.this, SignInActivity.class)
+                                .putExtra(VERIFICATION_ID_KEY , verificationResult.getVerificationId()));
+                    else if (verificationResult.isVerificationComplete()) {
+                        // TODO chats intent
+                    } else
+                        phoneEditText.setError(verificationResult.getMessage());
                 });
             } else {
                 phoneEditText.setError("Phone number isn't valid");
