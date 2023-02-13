@@ -2,6 +2,8 @@ package edu.tamykyy.lychat.di;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 
 import javax.inject.Singleton;
 
@@ -24,5 +26,17 @@ public final class FirebaseModule {
     @Singleton
     public FirebaseUser provideFirebaseCurrentUser(FirebaseAuth auth) {
         return auth.getCurrentUser();
+    }
+
+    @Provides
+    @Singleton
+    public FirebaseFirestore provideFirebaseFirestore() {
+        return FirebaseFirestore.getInstance();
+    }
+
+    @Provides
+    @Singleton
+    public FirebaseStorage provideFirebaseStorage() {
+        return FirebaseStorage.getInstance();
     }
 }
