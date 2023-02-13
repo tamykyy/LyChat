@@ -39,21 +39,22 @@ public class AuthenticationActivity extends AppCompatActivity {
         countryCodePicker.registerCarrierNumberEditText(phoneEditText);
 
         myBinding.signInButton.setOnClickListener(v -> {
-            if (countryCodePicker.isValidFullNumber()) {
-                myViewModel.sendVerificationCode(countryCodePicker.getFullNumberWithPlus(), AuthenticationActivity.this);
-
-                myViewModel.getVerificationResultLiveData().observe(AuthenticationActivity.this, verificationResult -> {
-                    if (verificationResult.isCodeSent())
-                        startActivity(new Intent(AuthenticationActivity.this, SignInActivity.class)
-                                .putExtra(VERIFICATION_ID_KEY , verificationResult.getVerificationId()));
-                    else if (verificationResult.isVerificationComplete()) {
-                        // TODO chats intent
-                    } else
-                        phoneEditText.setError(verificationResult.getMessage());
-                });
-            } else {
-                phoneEditText.setError("Phone number isn't valid");
-            }
+            startActivity(new Intent(AuthenticationActivity.this, CreateAccountActivity.class));
+//            if (countryCodePicker.isValidFullNumber()) {
+//                myViewModel.sendVerificationCode(countryCodePicker.getFullNumberWithPlus(), AuthenticationActivity.this);
+//
+//                myViewModel.getVerificationResultLiveData().observe(AuthenticationActivity.this, verificationResult -> {
+//                    if (verificationResult.isCodeSent())
+//                        startActivity(new Intent(AuthenticationActivity.this, SignInActivity.class)
+//                                .putExtra(VERIFICATION_ID_KEY , verificationResult.getVerificationId()));
+//                    else if (verificationResult.isVerificationComplete()) {
+//                         TODO chats intent
+//                    } else
+//                        phoneEditText.setError(verificationResult.getMessage());
+//                });
+//            } else {
+//                phoneEditText.setError("Phone number isn't valid");
+//            }
         });
     }
 }

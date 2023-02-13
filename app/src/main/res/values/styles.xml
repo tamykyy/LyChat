@@ -10,5 +10,12 @@
         <item name="cornerRadius">30dp</item>
     </style>
     <style name="LyChat.Button" parent="LyChat.Base.DayNight.Button"/>
+    
+    <style name="LyChat.Base.DayNight.circleImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+        <item name="background">@color/teal_200</item>
+    </style>
+    <style name="LyChat.circleImageView" parent="LyChat.Base.DayNight.circleImageView"/>
 
 </resources>
