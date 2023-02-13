@@ -2,23 +2,16 @@ package edu.tamykyy.lychat.presentation;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.widget.Toolbar;
-
-import com.google.firebase.auth.PhoneAuthCredential;
-
-import java.util.Map;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.tamykyy.lychat.R;
 import edu.tamykyy.lychat.databinding.ActivitySignInBinding;
-import edu.tamykyy.lychat.domain.models.SignInWithCredentialResultModel;
 
 @AndroidEntryPoint
 public class SignInActivity extends AppCompatActivity {

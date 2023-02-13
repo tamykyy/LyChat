@@ -17,8 +17,6 @@ import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Inject;
-
 import edu.tamykyy.lychat.domain.models.VerificationResultModel;
 
 public class SendVerificationCodeUseCase {

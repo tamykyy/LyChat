@@ -9,8 +9,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.PhoneAuthCredential;
 
-import java.util.AbstractMap;
-
 import edu.tamykyy.lychat.domain.models.SignInWithCredentialResultModel;
 
 public class SignInWithPhoneAuthCredentialUseCase {
