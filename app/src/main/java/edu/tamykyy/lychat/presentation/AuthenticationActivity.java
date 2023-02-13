@@ -42,7 +42,7 @@ public class AuthenticationActivity extends AppCompatActivity {
             if (countryCodePicker.isValidFullNumber()) {
                 myViewModel.sendVerificationCode(countryCodePicker.getFullNumberWithPlus(), AuthenticationActivity.this);
 
-                myViewModel.getVerificationResultModel().observe(AuthenticationActivity.this, verificationResult -> {
+                myViewModel.getVerificationResultLiveData().observe(AuthenticationActivity.this, verificationResult -> {
                     if (verificationResult.isCodeSent())
                         startActivity(new Intent(AuthenticationActivity.this, SignInActivity.class)
                                 .putExtra(VERIFICATION_ID_KEY , verificationResult.getVerificationId()));

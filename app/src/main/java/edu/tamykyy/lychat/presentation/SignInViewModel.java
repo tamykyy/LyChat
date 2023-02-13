@@ -10,39 +10,39 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import edu.tamykyy.lychat.domain.models.SignInWithCredentialResultModel;
-import edu.tamykyy.lychat.domain.usecase.CreatePhoneAuthCredentialUseCase;
-import edu.tamykyy.lychat.domain.usecase.SignInWithPhoneAuthCredentialUseCase;
+import edu.tamykyy.lychat.domain.usecase.CreateCredentialUseCase;
+import edu.tamykyy.lychat.domain.usecase.SignInWithCredentialUseCase;
 
 @HiltViewModel
 public class SignInViewModel extends ViewModel {
 
-    private final CreatePhoneAuthCredentialUseCase createPhoneAuthCredentialUseCase;
-    private final SignInWithPhoneAuthCredentialUseCase signInWithPhoneAuthCredentialUseCase;
+    private final CreateCredentialUseCase createCredentialUseCase;
+    private final SignInWithCredentialUseCase signInWithCredentialUseCase;
     private final MutableLiveData<PhoneAuthCredential> credentialLiveData = new MutableLiveData<>();
-    private final LiveData<SignInWithCredentialResultModel> getSignInWithCredentialResultModelLiveData;
+    private final LiveData<SignInWithCredentialResultModel> signInWithCredentialResultLiveData;
 
     @Inject
-    public SignInViewModel(CreatePhoneAuthCredentialUseCase createPhoneAuthCredentialUseCase,
-    SignInWithPhoneAuthCredentialUseCase signInWithPhoneAuthCredentialUseCase) {
-        this.createPhoneAuthCredentialUseCase = createPhoneAuthCredentialUseCase;
-        this.signInWithPhoneAuthCredentialUseCase = signInWithPhoneAuthCredentialUseCase;
-        this.getSignInWithCredentialResultModelLiveData = signInWithPhoneAuthCredentialUseCase.getSignInWithCredentialResultModelLiveData();
+    public SignInViewModel(CreateCredentialUseCase createCredentialUseCase,
+                           SignInWithCredentialUseCase signInWithCredentialUseCase) {
+        this.createCredentialUseCase = createCredentialUseCase;
+        this.signInWithCredentialUseCase = signInWithCredentialUseCase;
+        this.signInWithCredentialResultLiveData = signInWithCredentialUseCase.getSignInWithCredentialResultLiveData();
     }
 
-    public void createPhoneAuthCredential(String verificationId, String code) {
-        PhoneAuthCredential credential = createPhoneAuthCredentialUseCase.execute(verificationId, code);
+    public void createCredential(String verificationId, String code) {
+        PhoneAuthCredential credential = createCredentialUseCase.execute(verificationId, code);
         credentialLiveData.setValue(credential);
     }
 
-    public void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
-        signInWithPhoneAuthCredentialUseCase.execute(credential);
+    public void signInWithCredential(PhoneAuthCredential credential) {
+        signInWithCredentialUseCase.execute(credential);
     }
 
     public LiveData<PhoneAuthCredential> getCredentialLiveData() {
         return credentialLiveData;
     }
 
-    public LiveData<SignInWithCredentialResultModel> getGetSignInWithCredentialResultModelLiveData() {
-        return getSignInWithCredentialResultModelLiveData;
+    public LiveData<SignInWithCredentialResultModel> getSignInWithCredentialResultLiveData() {
+        return signInWithCredentialResultLiveData;
     }
 }

@@ -55,20 +55,33 @@
             app:layout_constraintTop_toTopOf="@+id/editTextPhone" />
 
         <EditText
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:id="@+id/editTextPhone"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
-            android:layout_marginBottom="45dp"
             android:ems="10"
             android:hint="phone number"
             android:inputType="phone"
             android:minHeight="48dp"
-            app:layout_constraintBottom_toTopOf="@+id/sign_in_button"
+            app:layout_constraintBottom_toTopOf="@+id/userTipTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/countryCodePicker" />
+
+        <TextView
+            android:id="@+id/userTipTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="35dp"
+            android:text="Enter phone number to login or registrate"
+            android:textAlignment="center"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toTopOf="@+id/sign_in_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/sign_in_button"
@@ -77,7 +90,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="5dp"
-            android:text="Log in"
+            android:text="Start now"
             android:textSize="17sp"
             app:layout_constraintBottom_toTopOf="@+id/textView"
             app:layout_constraintDimensionRatio="13:2"
@@ -89,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="45dp"
-            android:text="Don't have an account?"
+            android:text="Have an anonymous account?"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/registerAccountLinkTextView"
@@ -105,7 +118,7 @@
             android:layout_marginStart="5dp"
             android:clickable="true"
             android:focusable="true"
-            android:text="@string/register_here_link"
+            android:text="@string/login_here_link"
             android:textColor="#4168DD"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/textView"

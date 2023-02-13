@@ -11,13 +11,13 @@ import com.google.firebase.auth.PhoneAuthCredential;
 
 import edu.tamykyy.lychat.domain.models.SignInWithCredentialResultModel;
 
-public class SignInWithPhoneAuthCredentialUseCase {
+public class SignInWithCredentialUseCase {
 
     private final FirebaseAuth auth;
-    private final MutableLiveData<SignInWithCredentialResultModel> signInWithCredentialResultModelLiveData =
+    private final MutableLiveData<SignInWithCredentialResultModel> signInWithCredentialResultLiveData =
             new MutableLiveData<>();
 
-    public SignInWithPhoneAuthCredentialUseCase(FirebaseAuth auth) {
+    public SignInWithCredentialUseCase(FirebaseAuth auth) {
         this.auth = auth;
     }
 
@@ -28,14 +28,14 @@ public class SignInWithPhoneAuthCredentialUseCase {
 //                         Sign in success, update UI with the signed-in user's information
                         Log.d("AAA", "signInWithCredential:success");
                         boolean isNewUser = task.getResult().getAdditionalUserInfo().isNewUser();
-                        signInWithCredentialResultModelLiveData.setValue(
+                        signInWithCredentialResultLiveData.setValue(
                                 new SignInWithCredentialResultModel(true, isNewUser, "ok"));
 
                     } else {
 //                         Sign in failed, display a message and update the UI
                         Log.w("AAAA", "signInWithCredential:failure", task.getException());
                         if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                            signInWithCredentialResultModelLiveData.setValue(
+                            signInWithCredentialResultLiveData.setValue(
                                     new SignInWithCredentialResultModel(false, false,
                                             "The verification code entered was invalid"));
                         }
@@ -43,7 +43,7 @@ public class SignInWithPhoneAuthCredentialUseCase {
                 });
     }
 
-    public LiveData<SignInWithCredentialResultModel> getSignInWithCredentialResultModelLiveData() {
-        return signInWithCredentialResultModelLiveData;
+    public LiveData<SignInWithCredentialResultModel> getSignInWithCredentialResultLiveData() {
+        return signInWithCredentialResultLiveData;
     }
 }

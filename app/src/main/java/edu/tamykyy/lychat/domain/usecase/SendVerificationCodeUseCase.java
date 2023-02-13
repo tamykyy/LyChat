@@ -22,7 +22,7 @@ import edu.tamykyy.lychat.domain.models.VerificationResultModel;
 public class SendVerificationCodeUseCase {
 
     private final FirebaseAuth auth;
-    private final MutableLiveData<VerificationResultModel> verificationResultModel = new MutableLiveData<>();
+    private final MutableLiveData<VerificationResultModel> verificationResultLiveData = new MutableLiveData<>();
 
     public SendVerificationCodeUseCase(FirebaseAuth auth) {
         this.auth = auth;
@@ -35,18 +35,18 @@ public class SendVerificationCodeUseCase {
                         .setPhoneNumber(phoneNumber)       // Phone number to verify
                         .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
                         .setActivity(activity)                 // Activity (for callback binding)
-                        .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
+                        .setCallbacks(callbacks)          // OnVerificationStateChangedCallbacks
                         .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
     }
 
-    private final PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks =
+    private final PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks =
             new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
                 @Override
                 public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
                     Log.d("AAA", "onVerificationCompleted:" + credential);
-                    verificationResultModel.setValue(new VerificationResultModel(
+                    verificationResultLiveData.setValue(new VerificationResultModel(
                             false, "ok", null, credential));
                 }
 
@@ -55,11 +55,11 @@ public class SendVerificationCodeUseCase {
                     Log.w("AAA", "onVerificationFailed", e);
 
                     if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                        verificationResultModel.setValue(
+                        verificationResultLiveData.setValue(
                                 new VerificationResultModel(true, "Phone number verification failed, number is invalid", null, null));
                         Log.d("AAA", "Phone number is invalid");
                     } else if (e instanceof FirebaseTooManyRequestsException) {
-                        verificationResultModel.setValue(
+                        verificationResultLiveData.setValue(
                                 new VerificationResultModel(true, "Verification failed", null, null));
                         Log.d("AAA", "Verification failed");
                     }
@@ -70,7 +70,7 @@ public class SendVerificationCodeUseCase {
                 public void onCodeSent(@NonNull String verificationId,
                                        @NonNull PhoneAuthProvider.ForceResendingToken token) {
                     Log.d("AAA", "onCodeSent:" + verificationId);
-                    verificationResultModel.setValue(
+                    verificationResultLiveData.setValue(
                             new VerificationResultModel(false, "ok", verificationId, null));
                 }
 
@@ -80,7 +80,7 @@ public class SendVerificationCodeUseCase {
                 }
             };
 
-    public LiveData<VerificationResultModel> getVerificationResultModel() {
-        return verificationResultModel;
+    public LiveData<VerificationResultModel> getVerificationResultLiveData() {
+        return verificationResultLiveData;
     }
 }

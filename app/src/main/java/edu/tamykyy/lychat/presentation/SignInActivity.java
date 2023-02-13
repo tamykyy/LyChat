@@ -47,13 +47,13 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable code) {
                 if (code.length() == 6) {
-                    myViewModel.createPhoneAuthCredential(verificationId, code.toString());
+                    myViewModel.createCredential(verificationId, code.toString());
 
                     myViewModel.getCredentialLiveData().observe(SignInActivity.this, credential -> {
-                        myViewModel.signInWithPhoneAuthCredential(credential);
+                        myViewModel.signInWithCredential(credential);
                     });
 
-                    myViewModel.getGetSignInWithCredentialResultModelLiveData().observe(SignInActivity.this,
+                    myViewModel.getSignInWithCredentialResultLiveData().observe(SignInActivity.this,
                             signInWithCredentialResultModel -> {
                                 if (signInWithCredentialResultModel.isSignInWithCredentialSuccess()) {
                                     if (signInWithCredentialResultModel.isNewUserSignIn()) {

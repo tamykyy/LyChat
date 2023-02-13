@@ -6,9 +6,9 @@ import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.components.ViewModelComponent;
-import edu.tamykyy.lychat.domain.usecase.CreatePhoneAuthCredentialUseCase;
+import edu.tamykyy.lychat.domain.usecase.CreateCredentialUseCase;
 import edu.tamykyy.lychat.domain.usecase.SendVerificationCodeUseCase;
-import edu.tamykyy.lychat.domain.usecase.SignInWithPhoneAuthCredentialUseCase;
+import edu.tamykyy.lychat.domain.usecase.SignInWithCredentialUseCase;
 
 @Module
 @InstallIn(ViewModelComponent.class)
@@ -20,13 +20,13 @@ public final class DomainModel {
     }
 
     @Provides
-    public CreatePhoneAuthCredentialUseCase provideCreatePhoneAuthCredentialUseCase() {
-        return new CreatePhoneAuthCredentialUseCase();
+    public CreateCredentialUseCase provideCreatePhoneAuthCredentialUseCase() {
+        return new CreateCredentialUseCase();
     }
 
     @Provides
-    public SignInWithPhoneAuthCredentialUseCase provideSignInWithPhoneAuthCredentialUseCase(FirebaseAuth auth) {
-        return new SignInWithPhoneAuthCredentialUseCase(auth);
+    public SignInWithCredentialUseCase provideSignInWithPhoneAuthCredentialUseCase(FirebaseAuth auth) {
+        return new SignInWithCredentialUseCase(auth);
     }
 
 }

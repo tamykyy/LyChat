@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">LyChat</string>
-    <string name="register_here_link"><u>Register here!</u></string>
+    <string name="login_here_link"><u>Login here!</u></string>
 </resources>
