@@ -13,19 +13,14 @@ import edu.tamykyy.lychat.domain.usecase.SendVerificationCodeUseCase;
 public class AuthenticationViewModel extends ViewModel {
 
     private final SendVerificationCodeUseCase sendVerificationCodeUseCase;
-    private final LiveData<VerificationResultModel> verificationResultLiveData;
 
     @Inject
     public AuthenticationViewModel(SendVerificationCodeUseCase sendVerificationCodeUseCase) {
         this.sendVerificationCodeUseCase = sendVerificationCodeUseCase;
-        this.verificationResultLiveData = sendVerificationCodeUseCase.getVerificationResultLiveData();
     }
 
-    protected void sendVerificationCode(String phoneNumber, AuthenticationActivity activity) {
-        sendVerificationCodeUseCase.execute(phoneNumber, activity);
+    protected LiveData<VerificationResultModel> sendVerificationCode(String phoneNumber, AuthenticationActivity activity) {
+        return sendVerificationCodeUseCase.execute(phoneNumber, activity);
     }
 
-    public LiveData<VerificationResultModel> getVerificationResultLiveData() {
-        return verificationResultLiveData;
-    }
 }

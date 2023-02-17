@@ -2,16 +2,21 @@ package edu.tamykyy.lychat.presentation;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 
+import com.google.firebase.auth.PhoneAuthCredential;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.tamykyy.lychat.R;
 import edu.tamykyy.lychat.databinding.ActivitySignInBinding;
+import edu.tamykyy.lychat.domain.models.SignInWithCredentialResultModel;
 
 @AndroidEntryPoint
 public class SignInActivity extends AppCompatActivity {
@@ -47,18 +52,12 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable code) {
                 if (code.length() == 6) {
-                    myViewModel.createCredential(verificationId, code.toString());
-
-                    myViewModel.getCredentialLiveData().observe(SignInActivity.this, credential -> {
-                        myViewModel.signInWithCredential(credential);
-                    });
-
-                    myViewModel.getSignInWithCredentialResultLiveData().observe(SignInActivity.this,
+                    LiveData<SignInWithCredentialResultModel> result = myViewModel.signIn(verificationId, code.toString());
+                    result.observe(SignInActivity.this,
                             signInWithCredentialResultModel -> {
                                 if (signInWithCredentialResultModel.isSignInWithCredentialSuccess()) {
                                     if (signInWithCredentialResultModel.isNewUserSignIn()) {
-                                        //TODO registration intent
-                                        Log.d("AAA", "New user registration!!!!");
+                                        startActivity(new Intent(SignInActivity.this, CreateAccountActivity.class));
                                     } else {
                                         // TODO chats intent
                                         Log.d("AAA", "User login!!!!");

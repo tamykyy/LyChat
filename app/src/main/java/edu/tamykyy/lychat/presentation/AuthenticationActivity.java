@@ -2,6 +2,7 @@ package edu.tamykyy.lychat.presentation;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
@@ -14,6 +15,7 @@ import com.hbb20.CountryCodePicker;
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.tamykyy.lychat.R;
 import edu.tamykyy.lychat.databinding.ActivityAuthenticationBinding;
+import edu.tamykyy.lychat.domain.models.VerificationResultModel;
 
 @AndroidEntryPoint
 public class AuthenticationActivity extends AppCompatActivity {
@@ -39,22 +41,23 @@ public class AuthenticationActivity extends AppCompatActivity {
         countryCodePicker.registerCarrierNumberEditText(phoneEditText);
 
         myBinding.signInButton.setOnClickListener(v -> {
-            startActivity(new Intent(AuthenticationActivity.this, CreateAccountActivity.class));
-//            if (countryCodePicker.isValidFullNumber()) {
-//                myViewModel.sendVerificationCode(countryCodePicker.getFullNumberWithPlus(), AuthenticationActivity.this);
-//
-//                myViewModel.getVerificationResultLiveData().observe(AuthenticationActivity.this, verificationResult -> {
-//                    if (verificationResult.isCodeSent())
-//                        startActivity(new Intent(AuthenticationActivity.this, SignInActivity.class)
-//                                .putExtra(VERIFICATION_ID_KEY , verificationResult.getVerificationId()));
-//                    else if (verificationResult.isVerificationComplete()) {
+//            startActivity(new Intent(AuthenticationActivity.this, CreateAccountActivity.class));
+            if (countryCodePicker.isValidFullNumber()) {
+                LiveData<VerificationResultModel> result =
+                        myViewModel.sendVerificationCode(countryCodePicker.getFullNumberWithPlus(), AuthenticationActivity.this);
+
+                result.observe(AuthenticationActivity.this, verificationResult -> {
+                    if (verificationResult.isCodeSent()) {
+                        startActivity(new Intent(AuthenticationActivity.this, SignInActivity.class)
+                                .putExtra(VERIFICATION_ID_KEY, verificationResult.getVerificationId()));
+                    } else if (verificationResult.isVerificationComplete()) {
 //                         TODO chats intent
-//                    } else
-//                        phoneEditText.setError(verificationResult.getMessage());
-//                });
-//            } else {
-//                phoneEditText.setError("Phone number isn't valid");
-//            }
+                    } else
+                        phoneEditText.setError(verificationResult.getMessage());
+                });
+            } else {
+                phoneEditText.setError("Phone number isn't valid");
+            }
         });
     }
 }

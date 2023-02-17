@@ -17,7 +17,7 @@ public class VerificationResultModel {
     }
 
     public boolean isCodeSent() {
-        return !verificationId.isEmpty();
+        return verificationId != null;
     }
 
     public boolean isVerificationComplete() {
