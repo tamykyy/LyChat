@@ -57,6 +57,7 @@ public class SignInActivity extends AppCompatActivity {
                             signInWithCredentialResultModel -> {
                                 if (signInWithCredentialResultModel.isSignInWithCredentialSuccess()) {
                                     if (signInWithCredentialResultModel.isNewUserSignIn()) {
+                                        // create account intent
                                         startActivity(new Intent(SignInActivity.this, CreateAccountActivity.class));
                                     } else {
                                         // TODO chats intent

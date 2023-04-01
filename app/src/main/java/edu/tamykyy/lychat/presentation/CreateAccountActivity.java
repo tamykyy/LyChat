@@ -65,7 +65,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                     myBinding.lastNameEditText.getText().toString(),
                     currentUser.getPhoneNumber(),
                     currentUser.getUid());
-
+            
             result.observe(CreateAccountActivity.this, response -> {
                 Log.d("AAA", (response == null) + "");
                 if (response.SUCCESS()) {

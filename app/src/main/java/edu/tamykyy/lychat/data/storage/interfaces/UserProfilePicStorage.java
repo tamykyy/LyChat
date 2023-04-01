@@ -1,4 +1,4 @@
-package edu.tamykyy.lychat.data.storage;
+package edu.tamykyy.lychat.data.storage.interfaces;
 
 import android.net.Uri;
 

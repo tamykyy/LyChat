@@ -14,12 +14,12 @@ public interface AuthenticationRepository {
 
 //    boolean getFirebaseAuthState();
 
-    LiveData<VerificationResultModel> firebaseSendVerificationCode(String phoneNumber, AppCompatActivity activity);
+    LiveData<VerificationResultModel> sendVerificationCode(String phoneNumber, AppCompatActivity activity);
 
     PhoneAuthCredential getCredential(String verificationId, String code);
 
-    LiveData<SignInWithCredentialResultModel> firebaseSignIn(PhoneAuthCredential credential);
+    LiveData<SignInWithCredentialResultModel> signIn(PhoneAuthCredential credential);
 
-    boolean firebaseSignOut();
+    boolean signOut();
 
 }

@@ -13,7 +13,6 @@ import dagger.hilt.components.SingletonComponent;
 import edu.tamykyy.lychat.data.repository.AuthenticationRepositoryImpl;
 import edu.tamykyy.lychat.data.repository.UserRepositoryImpl;
 import edu.tamykyy.lychat.data.storage.UserFirestoreImpl;
-import edu.tamykyy.lychat.data.storage.UserProfilePicStorage;
 import edu.tamykyy.lychat.data.storage.UserProfilePicStorageImpl;
 import edu.tamykyy.lychat.domain.repository.AuthenticationRepository;
 import edu.tamykyy.lychat.domain.repository.UserRepository;
@@ -24,8 +23,8 @@ public class DataModule {
 
     @Provides
     @Singleton
-    public AuthenticationRepository provideAuthenticationRepositoryImpl(FirebaseAuth auth) {
-        return new AuthenticationRepositoryImpl(auth);
+    public AuthenticationRepository provideAuthenticationRepositoryImpl(FirebaseAuth auth, UserRepository userRepository) {
+        return new AuthenticationRepositoryImpl(auth, userRepository);
     }
 
     @Provides

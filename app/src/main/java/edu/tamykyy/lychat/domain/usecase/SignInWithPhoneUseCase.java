@@ -17,6 +17,6 @@ public class SignInWithPhoneUseCase {
 
     public LiveData<SignInWithCredentialResultModel> execute(String verificationId, String code) {
         PhoneAuthCredential credential = authenticationRepository.getCredential(verificationId, code);
-        return authenticationRepository.firebaseSignIn(credential);
+        return authenticationRepository.signIn(credential);
     }
 }
