@@ -1,14 +1,13 @@
 package edu.tamykyy.lychat.presentation;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
-import edu.tamykyy.lychat.domain.models.SignInWithCredentialResultModel;
 import edu.tamykyy.lychat.domain.usecase.SignInWithPhoneUseCase;
+import io.reactivex.rxjava3.core.Single;
 
 @HiltViewModel
 public class SignInViewModel extends ViewModel {
@@ -20,7 +19,7 @@ public class SignInViewModel extends ViewModel {
         this.signInWithPhoneUseCase = signInWithPhoneUseCase;
     }
 
-    public LiveData<SignInWithCredentialResultModel> signIn(String verificationId, String code) {
+    public Single<Boolean> signIn(String verificationId, String code) {
         return signInWithPhoneUseCase.execute(verificationId, code);
     }
 

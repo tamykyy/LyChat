@@ -1,7 +1,5 @@
 package edu.tamykyy.lychat.data.repository;
 
-import android.annotation.SuppressLint;
-import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -9,10 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.JdkFutureAdapters;
-import com.google.common.util.concurrent.ListenableFuture;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,12 +15,11 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import edu.tamykyy.lychat.domain.models.SignInWithCredentialResultModel;
-import edu.tamykyy.lychat.domain.models.UserDomainModel;
 import edu.tamykyy.lychat.domain.models.VerificationResultModel;
 import edu.tamykyy.lychat.domain.repository.AuthenticationRepository;
 import edu.tamykyy.lychat.domain.repository.UserRepository;
@@ -78,41 +71,18 @@ public class AuthenticationRepositoryImpl implements AuthenticationRepository {
     }
 
     @Override
-    public LiveData<SignInWithCredentialResultModel> signIn(PhoneAuthCredential credential) {
-        MutableLiveData<SignInWithCredentialResultModel> result = new MutableLiveData<>();
-        auth.signInWithCredential(credential)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-//                         Sign in success, update UI with the signed-in user's information
-                        Log.d("AAA", "signInWithCredential:success");
-                        String uid = task.getResult().getUser().getUid();
-                        UserDomainModel userDomainModel = new UserDomainModel();
-                        userDomainModel.setUserUID(uid);
-
-                        if (task.getResult().getAdditionalUserInfo().isNewUser()) {
-                            userRepository.save(userDomainModel);
-                            result.setValue(
-                                    new SignInWithCredentialResultModel(true, true, "success: new user"));
-                        } else {
-                            result.setValue(
-                                    new SignInWithCredentialResultModel(true, false, "success: old user"));
-                        }
-//)
-//                        userRepository.contains(uid).subscribe(isNewUser -> {
-//                            result.setValue(new SignInWithCredentialResultModel(true, isNewUser, "ok"));
-//                            Log.d("AAA", isNewUser +"");
-//                        });
-                    } else {
-//                         Sign in failed, display a message and update the UI
-                        Log.w("AAA", "signInWithCredential:failure", task.getException());
-                        if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                            result.setValue(
-                                    new SignInWithCredentialResultModel(false, false,
-                                            "The verification code entered was invalid"));
-                        }
-                    }
-                });
-        return result;
+    public Single<Boolean> signIn(PhoneAuthCredential credential) {
+        return Single.create(emitter -> auth.signInWithCredential(credential)
+                .addOnSuccessListener(authResult -> {
+                    if (Objects.requireNonNull(authResult.getAdditionalUserInfo()).isNewUser())
+                        // TODO create user in firebase
+                        // new user sign in
+                        emitter.onSuccess(true);
+                    else
+                        // old user sign in
+                        emitter.onSuccess(false);
+                })
+                .addOnFailureListener(emitter::onError));
     }
 
     @Override

@@ -2,21 +2,19 @@ package edu.tamykyy.lychat.presentation;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-
-import com.google.firebase.auth.PhoneAuthCredential;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.tamykyy.lychat.R;
 import edu.tamykyy.lychat.databinding.ActivitySignInBinding;
-import edu.tamykyy.lychat.domain.models.SignInWithCredentialResultModel;
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 @AndroidEntryPoint
 public class SignInActivity extends AppCompatActivity {
@@ -24,6 +22,7 @@ public class SignInActivity extends AppCompatActivity {
     private static final String VERIFICATION_ID_KEY = "verificationId";
     private ActivitySignInBinding myBinding;
     private SignInViewModel myViewModel;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,24 +51,24 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable code) {
                 if (code.length() == 6) {
-                    LiveData<SignInWithCredentialResultModel> result = myViewModel.signIn(verificationId, code.toString());
-                    result.observe(SignInActivity.this,
-                            signInWithCredentialResultModel -> {
-                                if (signInWithCredentialResultModel.isSignInWithCredentialSuccess()) {
-                                    if (signInWithCredentialResultModel.isNewUserSignIn()) {
-                                        // create account intent
-                                        startActivity(new Intent(SignInActivity.this, CreateAccountActivity.class));
-                                    } else {
-                                        // TODO chats intent
-                                        Log.d("AAA", "User login!!!!");
-                                        startActivity(new Intent(SignInActivity.this, ChatActivity.class));
-                                    }
-                                } else
-                                    myBinding.codeEditText.setError(signInWithCredentialResultModel.getMessage());
-                            }
-                    );
+                    Single<Boolean> userSignIn = myViewModel.signIn(verificationId, code.toString());
+                    Disposable disposable = userSignIn.subscribe(isNewUser -> {
+                        if (isNewUser)
+                            // create account intent
+                            startActivity(new Intent(SignInActivity.this, CreateAccountActivity.class));
+                        else
+                            // open chats intent
+                            startActivity(new Intent(SignInActivity.this, ChatActivity.class));
+                    }, throwable -> myBinding.codeEditText.setError(throwable.getMessage()));
+                    compositeDisposable.add(disposable);
                 }
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.dispose();
     }
 }

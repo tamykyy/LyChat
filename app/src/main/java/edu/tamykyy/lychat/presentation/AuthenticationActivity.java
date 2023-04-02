@@ -52,6 +52,7 @@ public class AuthenticationActivity extends AppCompatActivity {
                                 .putExtra(VERIFICATION_ID_KEY, verificationResult.getVerificationId()));
                     } else if (verificationResult.isVerificationComplete()) {
 //                         TODO chats intent
+                        startActivity(new Intent(AuthenticationActivity.this, ChatActivity.class));
                     } else
                         phoneEditText.setError(verificationResult.getMessage());
                 });

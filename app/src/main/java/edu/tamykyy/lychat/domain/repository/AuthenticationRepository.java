@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData;
 
 import com.google.firebase.auth.PhoneAuthCredential;
 
-import edu.tamykyy.lychat.domain.models.SignInWithCredentialResultModel;
 import edu.tamykyy.lychat.domain.models.VerificationResultModel;
+import io.reactivex.rxjava3.core.Single;
 
 public interface AuthenticationRepository {
 
@@ -18,7 +18,7 @@ public interface AuthenticationRepository {
 
     PhoneAuthCredential getCredential(String verificationId, String code);
 
-    LiveData<SignInWithCredentialResultModel> signIn(PhoneAuthCredential credential);
+    Single<Boolean> signIn(PhoneAuthCredential credential);
 
     boolean signOut();
 
