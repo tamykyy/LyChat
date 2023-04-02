@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import edu.tamykyy.lychat.domain.models.UserDomainModel;
 import edu.tamykyy.lychat.domain.models.VerificationResultModel;
 import edu.tamykyy.lychat.domain.repository.AuthenticationRepository;
 import edu.tamykyy.lychat.domain.repository.UserRepository;
@@ -74,15 +75,19 @@ public class AuthenticationRepositoryImpl implements AuthenticationRepository {
     public Single<Boolean> signIn(PhoneAuthCredential credential) {
         return Single.create(emitter -> auth.signInWithCredential(credential)
                 .addOnSuccessListener(authResult -> {
-                    if (Objects.requireNonNull(authResult.getAdditionalUserInfo()).isNewUser())
-                        // TODO create user in firebase
+                    if (Objects.requireNonNull(authResult.getAdditionalUserInfo()).isNewUser()) {
+                        // create user in firebase
+                        UserDomainModel user = new UserDomainModel();
+                        user.setUserUID(Objects.requireNonNull(authResult.getUser()).getUid());
+                        user.setPhoneNumber(authResult.getUser().getPhoneNumber());
+                        userRepository.save(user);
+
                         // new user sign in
                         emitter.onSuccess(true);
-                    else
+                    } else
                         // old user sign in
                         emitter.onSuccess(false);
-                })
-                .addOnFailureListener(emitter::onError));
+                }).addOnFailureListener(emitter::onError));
     }
 
     @Override
