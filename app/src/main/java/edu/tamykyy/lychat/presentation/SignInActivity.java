@@ -62,6 +62,7 @@ public class SignInActivity extends AppCompatActivity {
                                     } else {
                                         // TODO chats intent
                                         Log.d("AAA", "User login!!!!");
+                                        startActivity(new Intent(SignInActivity.this, ChatActivity.class));
                                     }
                                 } else
                                     myBinding.codeEditText.setError(signInWithCredentialResultModel.getMessage());

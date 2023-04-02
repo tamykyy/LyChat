@@ -71,6 +71,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                 if (response.SUCCESS()) {
                     // TODO open chats intent
                     Log.d("AAA", "Everything good");
+                    startActivity(new Intent(CreateAccountActivity.this, ChatActivity.class));
                 }
                 if (response.FAIL())
                     Toast.makeText(CreateAccountActivity.this,
