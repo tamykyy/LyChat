@@ -42,15 +42,18 @@ public class ChatActivity extends AppCompatActivity {
         if (currentUser == null) {
             startActivity(new Intent(this, AuthenticationActivity.class));
         } else {
-            // TODO: 02.04.2023 my view model get user profile
+            // my view model get user profile
             Single<UserDomainModel> userProfileSingle = myViewModel.getUserProfile(currentUser);
 
             Disposable disposable = userProfileSingle.subscribe(
-                    user -> Log.d("AAA", user.toString()),
+                    this::setUIUserData,
                     throwable -> Log.d("AAA", "error: " + throwable.getMessage())
             );
             compositeDisposable.add(disposable);
         }
+    }
+
+    private void setUIUserData(UserDomainModel userProfile) {
 
     }
 
