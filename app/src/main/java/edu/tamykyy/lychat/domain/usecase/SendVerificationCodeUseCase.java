@@ -8,7 +8,6 @@ import edu.tamykyy.lychat.domain.repository.AuthenticationRepository;
 
 public class SendVerificationCodeUseCase {
 
-
     private final AuthenticationRepository authenticationRepository;
 
     public SendVerificationCodeUseCase(AuthenticationRepository authenticationRepository) {

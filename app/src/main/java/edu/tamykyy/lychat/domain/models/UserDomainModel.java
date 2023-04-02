@@ -83,4 +83,17 @@ public class UserDomainModel {
     public void setUserUID(String userUID) {
         this.userUID = userUID;
     }
+
+    @Override
+    public String toString() {
+        return "UserDomainModel{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", profilePicture=" + profilePicture +
+                ", userUID='" + userUID + '\'' +
+                '}';
+    }
 }

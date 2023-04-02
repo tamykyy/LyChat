@@ -5,13 +5,9 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
-
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
+import java.io.FileNotFoundException;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -21,7 +17,6 @@ import edu.tamykyy.lychat.data.storage.models.Response;
 import edu.tamykyy.lychat.data.storage.models.UserDataModel;
 import edu.tamykyy.lychat.domain.models.UserDomainModel;
 import edu.tamykyy.lychat.domain.repository.UserRepository;
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 
 public class UserRepositoryImpl implements UserRepository {
@@ -37,23 +32,14 @@ public class UserRepositoryImpl implements UserRepository {
         this.storage = storage;
     }
 
-//    @Override
-//    public Future<Boolean> contains(String uid) {
-//        Task<DocumentSnapshot> dco = firebase.get(uid)
-//                .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful()) {
-//                        DocumentSnapshot document = task.getResult();
-//                        if (document.exists()) {
-//                            empty.
-//                        } else {
-//                            isExists.complete(false);
-//                        }
-//                    } else {
-//                        task.getException().printStackTrace();
-//                    }
-//                });
-//        return isExists;
-//    }
+    @Override
+    public Single<UserDomainModel> get(String uid) {
+        return Single.create(emitter -> firebase.get(uid)
+                .addOnSuccessListener(doc -> {
+                    if (doc.exists()) emitter.onSuccess(mapToDomain(Objects.requireNonNull(doc.toObject(UserDataModel.class))));
+                    else emitter.onError(new FileNotFoundException("user is absent"));
+                }).addOnFailureListener(emitter::onError));
+    }
 
     @Override
     public LiveData<Response> save(UserDomainModel user) {
