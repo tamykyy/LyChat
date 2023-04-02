@@ -1,10 +1,8 @@
 package edu.tamykyy.lychat.domain.usecase;
 
-import androidx.lifecycle.LiveData;
-
-import edu.tamykyy.lychat.data.storage.models.Response;
 import edu.tamykyy.lychat.domain.models.UserDomainModel;
 import edu.tamykyy.lychat.domain.repository.UserRepository;
+import io.reactivex.rxjava3.core.Completable;
 
 public class CreateUserUseCase {
 
@@ -14,7 +12,7 @@ public class CreateUserUseCase {
         this.userRepository = userRepository;
     }
 
-    public LiveData<Response> execute(UserDomainModel userDomainModel) {
+    public Completable execute(UserDomainModel userDomainModel) {
         return userRepository.save(userDomainModel);
     }
 }

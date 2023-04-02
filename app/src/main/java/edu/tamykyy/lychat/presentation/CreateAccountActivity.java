@@ -5,7 +5,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
@@ -21,8 +20,10 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.tamykyy.lychat.R;
-import edu.tamykyy.lychat.data.storage.models.Response;
 import edu.tamykyy.lychat.databinding.ActivityCreateAccountBinding;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 @AndroidEntryPoint
 public class CreateAccountActivity extends AppCompatActivity {
@@ -32,6 +33,8 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     @Inject
     public FirebaseUser currentUser;
+
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,23 +63,17 @@ public class CreateAccountActivity extends AppCompatActivity {
             }
             Log.d("AAA", "" + currentUser);
 
-            LiveData<Response> result = myViewModel.createUser(imageUri,
+            Completable saveUser = myViewModel.createUser(imageUri,
                     myBinding.nameEditText.getText().toString(),
                     myBinding.lastNameEditText.getText().toString(),
                     currentUser.getPhoneNumber(),
                     currentUser.getUid());
-            
-            result.observe(CreateAccountActivity.this, response -> {
-                Log.d("AAA", (response == null) + "");
-                if (response.SUCCESS()) {
-                    // TODO open chats intent
-                    Log.d("AAA", "Everything good");
-                    startActivity(new Intent(CreateAccountActivity.this, ChatActivity.class));
-                }
-                if (response.FAIL())
-                    Toast.makeText(CreateAccountActivity.this,
-                            response.getMessage(), Toast.LENGTH_LONG).show();
-            });
+
+            Disposable disposable = saveUser.subscribe(
+                    () -> startActivity(new Intent(CreateAccountActivity.this, ChatActivity.class)),
+                    throwable -> Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_LONG).show()
+            );
+            compositeDisposable.add(disposable);
         });
     }
 
@@ -90,4 +87,10 @@ public class CreateAccountActivity extends AppCompatActivity {
                 }
             }
     );
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.dispose();
+    }
 }

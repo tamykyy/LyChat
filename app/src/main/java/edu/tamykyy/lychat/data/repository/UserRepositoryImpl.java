@@ -3,8 +3,8 @@ package edu.tamykyy.lychat.data.repository;
 import android.net.Uri;
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+
+import com.google.android.gms.tasks.Task;
 
 import java.io.FileNotFoundException;
 import java.util.Objects;
@@ -13,10 +13,10 @@ import javax.inject.Inject;
 
 import edu.tamykyy.lychat.data.storage.UserFirestoreImpl;
 import edu.tamykyy.lychat.data.storage.UserProfilePicStorageImpl;
-import edu.tamykyy.lychat.data.storage.models.Response;
 import edu.tamykyy.lychat.data.storage.models.UserDataModel;
 import edu.tamykyy.lychat.domain.models.UserDomainModel;
 import edu.tamykyy.lychat.domain.repository.UserRepository;
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 
 public class UserRepositoryImpl implements UserRepository {
@@ -36,39 +36,40 @@ public class UserRepositoryImpl implements UserRepository {
     public Single<UserDomainModel> get(String uid) {
         return Single.create(emitter -> firebase.get(uid)
                 .addOnSuccessListener(doc -> {
-                    if (doc.exists()) emitter.onSuccess(mapToDomain(Objects.requireNonNull(doc.toObject(UserDataModel.class))));
+                    if (doc.exists())
+                        emitter.onSuccess(mapToDomain(Objects.requireNonNull(doc.toObject(UserDataModel.class))));
                     else emitter.onError(new FileNotFoundException("user is absent"));
                 }).addOnFailureListener(emitter::onError));
     }
 
     @Override
-    public LiveData<Response> save(UserDomainModel user) {
-        MutableLiveData<Response> response = new MutableLiveData<>();
-
+    public Completable save(UserDomainModel user) {
         Log.d("AAA", "saving starts");
-        if (user.getProfilePicture() == null) {
-            user.setProfilePicture(DEFAULT_PICTURE_URI);
-            saveUser(user, response);
-        } else {
-            storage.save(user.getProfilePicture(), user.getUserUID())
-                    .addOnCompleteListener(savePicTask -> {
-                        if (savePicTask.isSuccessful()) {
-                            user.setProfilePicture(savePicTask.getResult());
-                            saveUser(user, response);
-                        } else {
-                            response.postValue(new Response(false, true, savePicTask.getException().getMessage()));
-                        }
-                    });
-        }
-        return response;
+        return Completable.create(emitter -> {
+            if (user.getProfilePicture() == null) {
+                user.setProfilePicture(DEFAULT_PICTURE_URI);
+                saveUser(user)
+                        .addOnSuccessListener(unused -> emitter.onComplete())
+                        .addOnFailureListener(emitter::onError);
+            } else {
+                saveImage(user)
+                        .addOnSuccessListener(uri -> {
+                            user.setProfilePicture(uri);
+                            saveUser(user)
+                                    .addOnSuccessListener(unused -> emitter.onComplete())
+                                    .addOnFailureListener(emitter::onError);
+                        })
+                        .addOnFailureListener(emitter::onError);
+            }
+        });
     }
 
-    private void saveUser(UserDomainModel user, MutableLiveData<Response> response) {
-        firebase.save(mapToData(user))
-                .addOnSuccessListener(saveUserTask ->
-                        response.postValue(new Response(true, false, "success")))
-                .addOnFailureListener(e ->
-                        response.postValue(new Response(false, true, e.getMessage())));
+    private Task<Uri> saveImage(UserDomainModel user) {
+        return storage.save(user.getProfilePicture(), user.getUserUID());
+    }
+
+    private Task<Void> saveUser(UserDomainModel user) {
+        return firebase.save(mapToData(user));
     }
 
 
