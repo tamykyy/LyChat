@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -20,7 +21,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 import edu.tamykyy.lychat.R;
 import edu.tamykyy.lychat.databinding.ActivityChatBinding;
 import edu.tamykyy.lychat.domain.models.UserDomainModel;
-import edu.tamykyy.lychat.domain.usecase.LogoutUseCase;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -30,8 +30,6 @@ public class ChatActivity extends AppCompatActivity {
 
     private ActivityChatBinding myBinding;
     private ChatActivityViewModel myViewModel;
-
-    private UserDomainModel userProfile;
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -80,12 +78,12 @@ public class ChatActivity extends AppCompatActivity {
             } else if (itemId == R.id.logout) {
                 // Logout method
                 Log.d("AAA", "logout");
-                myViewModel.logout();
-                startActivity(new Intent(this, AuthenticationActivity.class));
+                showLogoutDialogAlert();
             } else {
                 Log.d("AAA", "unknown");
             }
 
+            myBinding.drawerLayout.close();
             return false;
         });
     }
@@ -99,6 +97,17 @@ public class ChatActivity extends AppCompatActivity {
                 .into(((ImageView) header.findViewById(R.id.avatarImageView)));
         ((TextView) header.findViewById(R.id.nameTextView)).setText(nameFirstLast);
         ((TextView) header.findViewById(R.id.phoneTextView)).setText(userProfile.getPhoneNumber());
+    }
+
+    private void showLogoutDialogAlert() {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("You want to logout?")
+                .setNegativeButton("Decline", (dialog, which) -> dialog.cancel())
+                .setPositiveButton("Logout", (dialog, which) -> {
+                    myViewModel.logout();
+                    dialog.dismiss();
+                    startActivity(new Intent(this, AuthenticationActivity.class));
+                }).show();
     }
 
     @Override
