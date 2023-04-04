@@ -91,8 +91,8 @@ public class AuthenticationRepositoryImpl implements AuthenticationRepository {
     }
 
     @Override
-    public boolean signOut() {
-        return false;
+    public void signOut() {
+        auth.signOut();
     }
 
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks(

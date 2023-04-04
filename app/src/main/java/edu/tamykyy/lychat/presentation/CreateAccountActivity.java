@@ -40,14 +40,11 @@ public class CreateAccountActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getSupportActionBar() != null) {
-            ActionBar actionBar = getSupportActionBar();
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle("Create profile");
-        }
-
         myBinding = DataBindingUtil.setContentView(this, R.layout.activity_create_account);
         myViewModel = new ViewModelProvider(this).get(CreateAccountViewModel.class);
+
+        myBinding.toolbar.setNavigationOnClickListener(v ->
+                startActivity(new Intent(this, AuthenticationActivity.class)));
 
         myBinding.avatarImageView.setOnClickListener(view -> {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);

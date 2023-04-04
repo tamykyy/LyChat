@@ -20,6 +20,6 @@ public interface AuthenticationRepository {
 
     Single<Boolean> signIn(PhoneAuthCredential credential);
 
-    boolean signOut();
+    void signOut();
 
 }

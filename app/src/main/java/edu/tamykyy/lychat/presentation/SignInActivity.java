@@ -22,20 +22,19 @@ public class SignInActivity extends AppCompatActivity {
     private static final String VERIFICATION_ID_KEY = "verificationId";
     private ActivitySignInBinding myBinding;
     private SignInViewModel myViewModel;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
         myBinding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in);
         myViewModel = new ViewModelProvider(this).get(SignInViewModel.class);
 
         String verificationId = getIntent().getStringExtra(VERIFICATION_ID_KEY);
+
+        myBinding.toolbar.setNavigationOnClickListener(v ->
+                startActivity(new Intent(this, AuthenticationActivity.class)));
 
         myBinding.codeEditText.addTextChangedListener(new TextWatcher() {
             @Override
