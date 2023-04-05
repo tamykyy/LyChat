@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
+
+import com.bumptech.glide.Glide;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.tamykyy.lychat.R;
@@ -19,6 +22,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private SettingsActivityViewModel myViewModel;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +31,21 @@ public class SettingsActivity extends AppCompatActivity {
         myViewModel = new ViewModelProvider(this).get(SettingsActivityViewModel.class);
 
         UserDomainModel userProfile = (UserDomainModel) getIntent().getExtras().get("userProfile");
-        Log.d("AAA", userProfile.toString());
+
+        Glide.with(this)
+                .load(userProfile.getProfilePicture())
+                .into(myBinding.avatarImageView);
+
+        String nameFirstLast = userProfile.getFirstName() + " " + userProfile.getLastName();
+        myBinding.phoneTextView.setText(userProfile.getPhoneNumber());
+        myBinding.nameFirstLastTextView.setText(nameFirstLast);
+
+        myBinding.base.setOnTouchListener(new SwipeListener(this) {
+            @Override
+            public void onSwipeRight() {
+                finish();
+            }
+        });
 
         myBinding.topAppBar.setNavigationOnClickListener(v -> finish());
     }

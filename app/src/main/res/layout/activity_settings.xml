@@ -5,13 +5,14 @@
     tools:context=".presentation.SettingsActivity">
 
     <LinearLayout
+        android:id="@+id/base"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
@@ -32,6 +33,67 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/avatarImageView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="250dp"
+                android:padding="3dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/baseline_person_24"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/LyChat.circleImageView"
+                app:strokeColor="#3E3E3E"
+                app:strokeWidth="3dp" />
+
+            <TextView
+                android:id="@+id/acountTitleTextView"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Account"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/avatarImageView"
+                app:layout_constraintTop_toTopOf="@+id/avatarImageView" />
+
+            <TextView
+                android:id="@+id/phoneTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="TextView"
+                app:layout_constraintBottom_toTopOf="@+id/nameFirstLastTextView"
+                app:layout_constraintStart_toStartOf="@+id/acountTitleTextView"
+                app:layout_constraintTop_toBottomOf="@+id/acountTitleTextView"
+                app:layout_constraintVertical_chainStyle="spread_inside" />
+
+            <TextView
+                android:id="@+id/nameFirstLastTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="TextView"
+                app:layout_constraintBottom_toTopOf="@+id/usernameTextView"
+                app:layout_constraintStart_toStartOf="@+id/acountTitleTextView"
+                app:layout_constraintTop_toBottomOf="@+id/phoneTextView" />
+
+            <TextView
+                android:id="@+id/usernameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="TextView"
+                app:layout_constraintBottom_toBottomOf="@+id/avatarImageView"
+                app:layout_constraintStart_toStartOf="@+id/nameFirstLastTextView"
+                app:layout_constraintTop_toBottomOf="@+id/nameFirstLastTextView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
