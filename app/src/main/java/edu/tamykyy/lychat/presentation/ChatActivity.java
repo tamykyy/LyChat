@@ -70,6 +70,14 @@ public class ChatActivity extends AppCompatActivity {
 
         myBinding.toolbar.setNavigationOnClickListener(v -> myBinding.drawerLayout.open());
 
+        myBinding.toolbar.setOnMenuItemClickListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.searchItem) {
+                Log.d("AAA", "search");
+            }
+            return true;
+        });
+
         myBinding.navigationView.setNavigationItemSelectedListener(item -> {
             int itemId = item.getItemId();
 

@@ -17,22 +17,23 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.AppBarLayout.PrimarySurface"
-            android:fitsSystemWindows="true">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+            <com.google.android.material.appbar.AppBarLayout
+                style="@style/Widget.MaterialComponents.AppBarLayout.PrimarySurface"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:title="@string/app_name"
-                app:navigationIcon="@drawable/baseline_menu_white_24"
-                style="@style/Widget.MaterialComponents.Toolbar.PrimarySurface"/>
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true">
 
-        </com.google.android.material.appbar.AppBarLayout>
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/toolbar"
+                    style="@style/Widget.MaterialComponents.Toolbar.PrimarySurface"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/colorPrimary"
+                    app:menu="@menu/chats_menu_app_bar"
+                    app:navigationIcon="@drawable/baseline_menu_white_24"
+                    app:title="@string/app_name" />
+
+            </com.google.android.material.appbar.AppBarLayout>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
