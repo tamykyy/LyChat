@@ -1,8 +1,12 @@
 package edu.tamykyy.lychat.domain.models;
 
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class UserDomainModel {
+import androidx.annotation.NonNull;
+
+public class UserDomainModel implements Parcelable {
 
     private String firstName;
     private String lastName;
@@ -27,6 +31,28 @@ public class UserDomainModel {
         this.profilePicture = profilePicture;
         this.userUID = userUID;
     }
+
+    protected UserDomainModel(Parcel in) {
+        firstName = in.readString();
+        lastName = in.readString();
+        phoneNumber = in.readString();
+        email = in.readString();
+        password = in.readString();
+        profilePicture = Uri.parse(in.readString());
+        userUID = in.readString();
+    }
+
+    public static final Creator<UserDomainModel> CREATOR = new Creator<UserDomainModel>() {
+        @Override
+        public UserDomainModel createFromParcel(Parcel in) {
+            return new UserDomainModel(in);
+        }
+
+        @Override
+        public UserDomainModel[] newArray(int size) {
+            return new UserDomainModel[size];
+        }
+    };
 
     public String getFirstName() {
         return firstName;
@@ -95,5 +121,21 @@ public class UserDomainModel {
                 ", profilePicture=" + profilePicture +
                 ", userUID='" + userUID + '\'' +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+        dest.writeString(phoneNumber);
+        dest.writeString(email);
+        dest.writeString(password);
+        dest.writeString(profilePicture.toString());
+        dest.writeString(userUID);
     }
 }

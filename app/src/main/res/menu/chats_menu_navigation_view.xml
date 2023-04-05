@@ -6,6 +6,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/settingsItem"
+            android:enabled="false"
             android:icon="@drawable/baseline_settings_24"
             android:title="Settings" />
         <item

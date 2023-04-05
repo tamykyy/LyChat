@@ -35,6 +35,8 @@ public class ChatActivity extends AppCompatActivity {
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
+    private UserDomainModel userProfile;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +88,8 @@ public class ChatActivity extends AppCompatActivity {
             if (itemId == R.id.settingsItem) {
                 // Open settings
                 Log.d("AAA", "settings");
-                startActivity(new Intent(ChatActivity.this, SettingsActivity.class));
+                startActivity(new Intent(ChatActivity.this, SettingsActivity.class)
+                        .putExtra("userProfile", userProfile));
             } else if (itemId == R.id.logoutItem) {
                 // Logout method
                 Log.d("AAA", "logout");
@@ -109,6 +112,8 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void setUIUserData(UserDomainModel userProfile) {
+        this.userProfile = userProfile;
+        myBinding.navigationView.getMenu().findItem(R.id.settingsItem).setEnabled(true);
         View header = myBinding.navigationView.getHeaderView(0);
 
         String nameFirstLast = userProfile.getFirstName() + " " + userProfile.getLastName();
