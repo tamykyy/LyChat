@@ -86,6 +86,7 @@ public class ChatActivity extends AppCompatActivity {
             if (itemId == R.id.settingsItem) {
                 // Open settings
                 Log.d("AAA", "settings");
+                startActivity(new Intent(ChatActivity.this, SettingsActivity.class));
             } else if (itemId == R.id.logoutItem) {
                 // Logout method
                 Log.d("AAA", "logout");
