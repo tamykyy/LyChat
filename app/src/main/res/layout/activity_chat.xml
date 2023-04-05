@@ -51,7 +51,7 @@
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/chats_header"
-            app:menu="@menu/chats_menu" />
+            app:menu="@menu/chats_menu_navigation_view" />
 
     </androidx.drawerlayout.widget.DrawerLayout>
 </layout>

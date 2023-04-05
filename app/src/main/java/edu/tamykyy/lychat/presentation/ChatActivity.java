@@ -81,9 +81,10 @@ public class ChatActivity extends AppCompatActivity {
         myBinding.navigationView.setNavigationItemSelectedListener(item -> {
             int itemId = item.getItemId();
 
-            if (itemId == R.id.item1) {
+            if (itemId == R.id.settingsItem) {
+                // Open settings
                 Log.d("AAA", "settings");
-            } else if (itemId == R.id.logout) {
+            } else if (itemId == R.id.logoutItem) {
                 // Logout method
                 Log.d("AAA", "logout");
                 showLogoutDialogAlert();
