@@ -5,10 +5,12 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.tamykyy.lychat.R;
@@ -52,6 +54,16 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         myBinding.topAppBar.setNavigationOnClickListener(v -> finish());
+
+        myBinding.topAppBar.setOnMenuItemClickListener(item -> {
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.logoutItem) {
+                showLogoutDialogAlert();
+                return true;
+            }
+            return false;
+        });
     }
 
     private void updateUI(UserDomainModel userProfile) {
@@ -64,6 +76,17 @@ public class SettingsActivity extends AppCompatActivity {
         String nameFirstLast = userProfile.getFirstName() + " " + userProfile.getLastName();
         myBinding.phoneTextView.setText(userProfile.getPhoneNumber());
         myBinding.nameFirstLastTextView.setText(nameFirstLast);
+    }
+
+    private void showLogoutDialogAlert() {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("You want to logout?")
+                .setNegativeButton("Decline", (dialog, which) -> dialog.cancel())
+                .setPositiveButton("Logout", (dialog, which) -> {
+                    myViewModel.logout();
+                    dialog.dismiss();
+                    startActivity(new Intent(this, AuthenticationActivity.class));
+                }).show();
     }
 
     @Override
