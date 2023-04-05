@@ -1,11 +1,15 @@
 package edu.tamykyy.lychat.presentation;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -65,6 +69,11 @@ public class SettingsActivity extends AppCompatActivity {
                         .putExtra("firstName", userProfile.getFirstName())
                         .putExtra("lastName", userProfile.getLastName()));
                 return true;
+            } else if (itemId == R.id.setProfilePhotoItem) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                galleryResultLauncher.launch(intent);
             }
             return false;
         });
@@ -93,6 +102,20 @@ public class SettingsActivity extends AppCompatActivity {
                     startActivity(new Intent(this, AuthenticationActivity.class));
                 }).show();
     }
+
+    private final ActivityResultLauncher<Intent> galleryResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    assert result.getData() != null;
+                    Uri imageUri = result.getData().getData();
+                    Disposable disposable = myViewModel.updateUserProfilePhoto(imageUri).subscribe(
+                            () -> Log.d("AAA", "profile photo updated"),
+                            throwable -> Log.d("AAA", throwable.getMessage())
+                    );
+                    myBinding.avatarImageView.setImageURI(imageUri);
+                }
+            }
+    );
 
     @Override
     protected void onDestroy() {

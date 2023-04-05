@@ -1,5 +1,7 @@
 package edu.tamykyy.lychat.domain.repository;
 
+import android.net.Uri;
+
 import java.util.HashMap;
 
 import edu.tamykyy.lychat.domain.models.UserDomainModel;
@@ -17,5 +19,5 @@ public interface UserRepository {
 
     Completable updateUserProfile(String uid, HashMap<String, Object> userMap);
 
-    Completable updateUserImage(UserDomainModel user);
+    Completable updateUserImage(String uid, Uri imageUri);
 }

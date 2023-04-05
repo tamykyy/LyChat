@@ -86,11 +86,12 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Completable updateUserImage(UserDomainModel user) {
-        return Completable.create(emitter -> saveImage(user)
+    public Completable updateUserImage(String uid, Uri imageUri) {
+        return Completable.create(emitter -> storage.save(imageUri, uid)
                 .addOnSuccessListener(uri -> {
-                    user.setProfilePicture(uri);
-                    saveUser(user)
+                    HashMap<String, Object> userMap = new HashMap<>();
+                    userMap.put("profilePicture", uri.toString());
+                    firebase.update(uid, userMap)
                             .addOnSuccessListener(unused -> emitter.onComplete())
                             .addOnFailureListener(emitter::onError);
                 })
