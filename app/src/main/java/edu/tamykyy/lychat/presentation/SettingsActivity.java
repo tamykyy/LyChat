@@ -14,6 +14,8 @@ import dagger.hilt.android.AndroidEntryPoint;
 import edu.tamykyy.lychat.R;
 import edu.tamykyy.lychat.databinding.ActivitySettingsBinding;
 import edu.tamykyy.lychat.domain.models.UserDomainModel;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 @AndroidEntryPoint
 public class SettingsActivity extends AppCompatActivity {
@@ -21,6 +23,8 @@ public class SettingsActivity extends AppCompatActivity {
     private ActivitySettingsBinding myBinding;
 
     private SettingsActivityViewModel myViewModel;
+
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -31,14 +35,14 @@ public class SettingsActivity extends AppCompatActivity {
         myViewModel = new ViewModelProvider(this).get(SettingsActivityViewModel.class);
 
         UserDomainModel userProfile = (UserDomainModel) getIntent().getExtras().get("userProfile");
+//        updateUI(userProfile);
 
-        Glide.with(this)
-                .load(userProfile.getProfilePicture())
-                .into(myBinding.avatarImageView);
-
-        String nameFirstLast = userProfile.getFirstName() + " " + userProfile.getLastName();
-        myBinding.phoneTextView.setText(userProfile.getPhoneNumber());
-        myBinding.nameFirstLastTextView.setText(nameFirstLast);
+        Disposable disposable = myViewModel.getUserProfileUpdates(userProfile.getUserUID())
+                .subscribe(
+                        this::updateUI,
+                        throwable -> Log.d("AAA", throwable.toString())
+                );
+        compositeDisposable.add(disposable);
 
         myBinding.base.setOnTouchListener(new SwipeListener(this) {
             @Override
@@ -48,5 +52,23 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         myBinding.topAppBar.setNavigationOnClickListener(v -> finish());
+    }
+
+    private void updateUI(UserDomainModel userProfile) {
+        Log.d("AAA", "update ui");
+
+        Glide.with(this)
+                .load(userProfile.getProfilePicture())
+                .into(myBinding.avatarImageView);
+
+        String nameFirstLast = userProfile.getFirstName() + " " + userProfile.getLastName();
+        myBinding.phoneTextView.setText(userProfile.getPhoneNumber());
+        myBinding.nameFirstLastTextView.setText(nameFirstLast);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.dispose();
     }
 }

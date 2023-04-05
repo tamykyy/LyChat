@@ -12,22 +12,23 @@ import java.util.Objects;
 import javax.inject.Inject;
 
 import edu.tamykyy.lychat.data.storage.UserFirestoreImpl;
-import edu.tamykyy.lychat.data.storage.UserProfilePicStorageImpl;
+import edu.tamykyy.lychat.data.storage.UserStorageImpl;
 import edu.tamykyy.lychat.data.storage.models.UserDataModel;
 import edu.tamykyy.lychat.domain.models.UserDomainModel;
 import edu.tamykyy.lychat.domain.repository.UserRepository;
 import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 
 public class UserRepositoryImpl implements UserRepository {
 
     private final UserFirestoreImpl firebase;
-    private final UserProfilePicStorageImpl storage;
+    private final UserStorageImpl storage;
 
     private static final Uri DEFAULT_PICTURE_URI = Uri.parse("https://firebasestorage.googleapis.com/v0/b/lychat-me.appspot.com/o/profilePictures%2Fdefault_img.png?alt=media&token=d213a51d-d799-48f0-af7b-fa3ca826f20c");
 
     @Inject
-    public UserRepositoryImpl(UserFirestoreImpl firebase, UserProfilePicStorageImpl storage) {
+    public UserRepositoryImpl(UserFirestoreImpl firebase, UserStorageImpl storage) {
         this.firebase = firebase;
         this.storage = storage;
     }
@@ -62,6 +63,17 @@ public class UserRepositoryImpl implements UserRepository {
                         .addOnFailureListener(emitter::onError);
             }
         });
+    }
+
+    @Override
+    public Observable<UserDomainModel> getUpdates(String uid) {
+        return Observable.create(emitter -> firebase.getDocumentRef(uid)
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) emitter.onError(error);
+
+                    if (value != null && value.exists())
+                        emitter.onNext(mapToDomain(Objects.requireNonNull(value.toObject(UserDataModel.class))));
+                }));
     }
 
     private Task<Uri> saveImage(UserDomainModel user) {

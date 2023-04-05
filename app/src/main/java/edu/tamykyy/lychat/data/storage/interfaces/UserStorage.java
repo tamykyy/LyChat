@@ -1,15 +1,11 @@
 package edu.tamykyy.lychat.data.storage.interfaces;
 
 
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
+import android.net.Uri;
 
-import edu.tamykyy.lychat.data.storage.models.UserDataModel;
+import com.google.android.gms.tasks.Task;
 
 public interface UserStorage {
 
-    Task<Void> save(UserDataModel user);
-
-    Task<DocumentSnapshot> get(String uid);
+    Task<Uri> save(Uri uri, String userUID);
 }
-
