@@ -24,5 +24,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         myBinding = DataBindingUtil.setContentView(this, R.layout.activity_settings);
         myViewModel = new ViewModelProvider(this).get(SettingsActivityViewModel.class);
+
+        myBinding.topAppBar.setNavigationOnClickListener(v -> finish());
     }
 }
