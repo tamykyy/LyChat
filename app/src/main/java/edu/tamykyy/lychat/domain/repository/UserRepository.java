@@ -1,5 +1,7 @@
 package edu.tamykyy.lychat.domain.repository;
 
+import java.util.HashMap;
+
 import edu.tamykyy.lychat.domain.models.UserDomainModel;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
@@ -12,4 +14,8 @@ public interface UserRepository {
     Completable save(UserDomainModel user);
 
     Observable<UserDomainModel> getUpdates(String uid);
+
+    Completable updateUserProfile(String uid, HashMap<String, Object> userMap);
+
+    Completable updateUserImage(UserDomainModel user);
 }

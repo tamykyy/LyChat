@@ -6,6 +6,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
+import java.util.HashMap;
+
 import edu.tamykyy.lychat.data.storage.interfaces.UserFirestore;
 import edu.tamykyy.lychat.data.storage.models.UserDataModel;
 
@@ -39,6 +41,14 @@ public class UserFirestoreImpl implements UserFirestore {
         return firestore
                 .collection(COLLECTION_NAME)
                 .document(uid);
+    }
+
+    @Override
+    public Task<Void> update(String uid, HashMap<String, Object> userMap) {
+        return firestore
+                .collection(COLLECTION_NAME)
+                .document(uid)
+                .update(userMap);
     }
 
 

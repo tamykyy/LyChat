@@ -7,6 +7,7 @@ import android.util.Log;
 import com.google.android.gms.tasks.Task;
 
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -76,6 +77,27 @@ public class UserRepositoryImpl implements UserRepository {
                 }));
     }
 
+    @Override
+    public Completable updateUserProfile(String uid, HashMap<String, Object> userMap) {
+        return Completable.create(emitter -> firebase.update(uid, userMap)
+                .addOnSuccessListener(unused -> emitter.onComplete())
+                .addOnFailureListener(emitter::onError)
+        );
+    }
+
+    @Override
+    public Completable updateUserImage(UserDomainModel user) {
+        return Completable.create(emitter -> saveImage(user)
+                .addOnSuccessListener(uri -> {
+                    user.setProfilePicture(uri);
+                    saveUser(user)
+                            .addOnSuccessListener(unused -> emitter.onComplete())
+                            .addOnFailureListener(emitter::onError);
+                })
+                .addOnFailureListener(emitter::onError)
+        );
+    }
+
     private Task<Uri> saveImage(UserDomainModel user) {
         return storage.save(user.getProfilePicture(), user.getUserUID());
     }
@@ -83,7 +105,6 @@ public class UserRepositoryImpl implements UserRepository {
     private Task<Void> saveUser(UserDomainModel user) {
         return firebase.save(mapToData(user));
     }
-
 
     private UserDataModel mapToData(UserDomainModel userDomain) {
         UserDataModel userData = new UserDataModel();

@@ -23,10 +23,9 @@ import io.reactivex.rxjava3.disposables.Disposable;
 public class SettingsActivity extends AppCompatActivity {
 
     private ActivitySettingsBinding myBinding;
-
     private SettingsActivityViewModel myViewModel;
-
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private UserDomainModel userProfile;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -36,7 +35,7 @@ public class SettingsActivity extends AppCompatActivity {
         myBinding = DataBindingUtil.setContentView(this, R.layout.activity_settings);
         myViewModel = new ViewModelProvider(this).get(SettingsActivityViewModel.class);
 
-        UserDomainModel userProfile = (UserDomainModel) getIntent().getExtras().get("userProfile");
+        userProfile = (UserDomainModel) getIntent().getExtras().get("userProfile");
 //        updateUI(userProfile);
 
         Disposable disposable = myViewModel.getUserProfileUpdates(userProfile.getUserUID())
@@ -61,6 +60,11 @@ public class SettingsActivity extends AppCompatActivity {
             if (itemId == R.id.logoutItem) {
                 showLogoutDialogAlert();
                 return true;
+            } else if (itemId == R.id.editNameItem) {
+                startActivity(new Intent(SettingsActivity.this, EditNameActivity.class)
+                        .putExtra("firstName", userProfile.getFirstName())
+                        .putExtra("lastName", userProfile.getLastName()));
+                return true;
             }
             return false;
         });
@@ -68,6 +72,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void updateUI(UserDomainModel userProfile) {
         Log.d("AAA", "update ui");
+        this.userProfile = userProfile;
 
         Glide.with(this)
                 .load(userProfile.getProfilePicture())

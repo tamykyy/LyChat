@@ -5,6 +5,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.util.HashMap;
+
 import edu.tamykyy.lychat.data.storage.models.UserDataModel;
 
 public interface UserFirestore {
@@ -14,5 +16,7 @@ public interface UserFirestore {
     Task<DocumentSnapshot> get(String uid);
 
     DocumentReference getDocumentRef(String uid);
+
+    Task<Void> update(String uid, HashMap<String, Object> userMap);
 }
 
