@@ -20,4 +20,6 @@ public interface UserRepository {
     Completable updateUserProfile(String uid, HashMap<String, Object> userMap);
 
     Completable updateUserImage(String uid, Uri imageUri);
+
+    Completable deleteProfilePhoto(String uid);
 }

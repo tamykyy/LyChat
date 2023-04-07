@@ -91,12 +91,21 @@ public class UserRepositoryImpl implements UserRepository {
                 .addOnSuccessListener(uri -> {
                     HashMap<String, Object> userMap = new HashMap<>();
                     userMap.put("profilePicture", uri.toString());
+
                     firebase.update(uid, userMap)
                             .addOnSuccessListener(unused -> emitter.onComplete())
                             .addOnFailureListener(emitter::onError);
                 })
                 .addOnFailureListener(emitter::onError)
         );
+    }
+
+    @Override
+    public Completable deleteProfilePhoto(String uid) {
+        HashMap<String, Object> userMap = new HashMap<>();
+        userMap.put("profilePicture", String.valueOf(DEFAULT_PICTURE_URI));
+
+        return updateUserProfile(uid, userMap);
     }
 
     private Task<Uri> saveImage(UserDomainModel user) {

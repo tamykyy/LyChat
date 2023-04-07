@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/actionMoreItem"
+        android:icon="@drawable/baseline_more_vert_white_24"
+        android:title=""
+        app:showAsAction="always">
+
+        <menu>
+
+            <item
+                android:id="@+id/setProfilePhotoItem"
+                android:contentDescription="Set profile photo"
+                android:icon="@drawable/baseline_photo_camera_black_24"
+                android:title="Set profile photo"
+                app:showAsAction="ifRoom" />
+
+            <item
+                android:id="@+id/savePhotoItem"
+                android:contentDescription="Save to Gallery"
+                android:icon="@drawable/baseline_save_alt_black_24"
+                android:title="Save to Gallery"
+                app:showAsAction="ifRoom" />
+
+            <item
+                android:id="@+id/deletePhotoItem"
+                android:contentDescription="Delete photo"
+                android:icon="@drawable/baseline_delete_black_24"
+                android:title="Delete"
+                app:showAsAction="ifRoom" />
+
+        </menu>
+    </item>
+
+</menu>

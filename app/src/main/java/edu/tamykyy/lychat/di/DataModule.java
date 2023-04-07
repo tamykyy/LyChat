@@ -11,10 +11,14 @@ import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.components.SingletonComponent;
 import edu.tamykyy.lychat.data.repository.AuthenticationRepositoryImpl;
+import edu.tamykyy.lychat.data.repository.UserLocalRepositoryImpl;
 import edu.tamykyy.lychat.data.repository.UserRepositoryImpl;
+import edu.tamykyy.lychat.data.storage.PhoneStorageImpl;
 import edu.tamykyy.lychat.data.storage.UserFirestoreImpl;
 import edu.tamykyy.lychat.data.storage.UserStorageImpl;
+import edu.tamykyy.lychat.data.storage.interfaces.PhoneStorage;
 import edu.tamykyy.lychat.domain.repository.AuthenticationRepository;
+import edu.tamykyy.lychat.domain.repository.UserLocalRepository;
 import edu.tamykyy.lychat.domain.repository.UserRepository;
 
 @Module
@@ -45,5 +49,16 @@ public class DataModule {
     @Singleton
     public UserStorageImpl provideUserStorageImpl(FirebaseStorage storage) {
         return new UserStorageImpl(storage);
+    }
+    @Provides
+    @Singleton
+    public PhoneStorage providePhoneStorageImpl() {
+        return new PhoneStorageImpl();
+    }
+
+    @Provides
+    @Singleton
+    public UserLocalRepository provideUserLocalRepositoryImpl(PhoneStorage phoneStorage) {
+        return new UserLocalRepositoryImpl(phoneStorage);
     }
 }
