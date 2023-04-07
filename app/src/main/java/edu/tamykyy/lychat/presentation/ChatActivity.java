@@ -51,9 +51,7 @@ public class ChatActivity extends AppCompatActivity {
         } else {
             Log.d("AAA", currentUser.getUid());
             // my view model get user profile
-            Single<UserDomainModel> userProfileSingle = myViewModel.getUserProfile(currentUser);
-
-            Disposable disposable = userProfileSingle.subscribe(
+            Disposable disposable = myViewModel.getUserProfileUpdates(currentUser.getUid()).subscribe(
                     this::setUIUserData,
                     throwable -> Log.d("AAA", "error: " + throwable.getMessage())
             );
