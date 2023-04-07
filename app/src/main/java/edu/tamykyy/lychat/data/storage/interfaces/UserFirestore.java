@@ -4,6 +4,7 @@ package edu.tamykyy.lychat.data.storage.interfaces;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 
@@ -18,5 +19,7 @@ public interface UserFirestore {
     DocumentReference getDocumentRef(String uid);
 
     Task<Void> update(String uid, HashMap<String, Object> userMap);
+
+    Task<QuerySnapshot> query(String field, String value);
 }
 

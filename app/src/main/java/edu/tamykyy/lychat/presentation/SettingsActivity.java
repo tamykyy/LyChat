@@ -152,6 +152,13 @@ public class SettingsActivity extends AppCompatActivity {
                 return false;
             });
         });
+
+        myBinding.usernameTextView.setOnClickListener(v -> {
+            Intent intent = new Intent(SettingsActivity.this, EditUsernameActivity.class);
+            intent.putExtra("userUid", userProfile.getUserUID());
+            intent.putExtra("userUsername", userProfile.getUsername());
+            startActivity(intent);
+        });
     }
 
     @Override

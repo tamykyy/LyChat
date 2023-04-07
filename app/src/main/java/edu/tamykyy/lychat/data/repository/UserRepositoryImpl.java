@@ -108,6 +108,20 @@ public class UserRepositoryImpl implements UserRepository {
         return updateUserProfile(uid, userMap);
     }
 
+    @Override
+    public Single<Boolean> containsQuery(String field, String value) {
+        return Single.create(emitter -> firebase.query(field, value)
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (queryDocumentSnapshots.isEmpty()) {
+                        emitter.onSuccess(false);
+                    } else {
+                        emitter.onSuccess(true);
+                    }
+                })
+                .addOnFailureListener(emitter::onError)
+        );
+    }
+
     private Task<Uri> saveImage(UserDomainModel user) {
         return storage.save(user.getProfilePicture(), user.getUserUID());
     }
@@ -121,6 +135,7 @@ public class UserRepositoryImpl implements UserRepository {
         userData.setFirstName(userDomain.getFirstName());
         userData.setLastName(userDomain.getLastName());
         userData.setPhoneNumber(userDomain.getPhoneNumber());
+        userData.setUsername(userDomain.getUsername());
         userData.setEmail(userDomain.getEmail());
         userData.setPassword(userDomain.getPassword());
         Log.d("AAA", "userDomain profPic:" + userDomain.getProfilePicture());
@@ -134,6 +149,7 @@ public class UserRepositoryImpl implements UserRepository {
         userDomain.setFirstName(userData.getFirstName());
         userDomain.setLastName(userData.getLastName());
         userDomain.setPhoneNumber(userData.getPhoneNumber());
+        userDomain.setUsername(userData.getUsername());
         userDomain.setEmail(userData.getEmail());
         userDomain.setPassword(userData.getPassword());
         userDomain.setProfilePicture(Uri.parse(userData.getProfilePicture()));

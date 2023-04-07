@@ -1,12 +1,11 @@
 package edu.tamykyy.lychat.data.storage.models;
 
-import android.net.Uri;
-
 public class UserDataModel {
 
     private String firstName;
     private String lastName;
     private String phoneNumber;
+    private String username;
     private String email;
     private String password;
     private String profilePicture;
@@ -16,12 +15,13 @@ public class UserDataModel {
     }
 
     public UserDataModel(String firstName, String lastName, String phoneNumber,
-                         String email, String password, String profilePicture,
+                         String username, String email, String password, String profilePicture,
                          String userUID
     ) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
+        this.username = username;
         this.email = email;
         this.password = password;
         this.profilePicture = profilePicture;
@@ -82,5 +82,13 @@ public class UserDataModel {
 
     public void setUserUID(String userUID) {
         this.userUID = userUID;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

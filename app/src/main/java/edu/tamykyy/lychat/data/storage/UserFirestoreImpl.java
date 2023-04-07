@@ -4,6 +4,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
@@ -49,6 +50,14 @@ public class UserFirestoreImpl implements UserFirestore {
                 .collection(COLLECTION_NAME)
                 .document(uid)
                 .update(userMap);
+    }
+
+    @Override
+    public Task<QuerySnapshot> query(String field, String value) {
+        return firestore
+                .collection(COLLECTION_NAME)
+                .whereEqualTo(field, value)
+                .get();
     }
 
 

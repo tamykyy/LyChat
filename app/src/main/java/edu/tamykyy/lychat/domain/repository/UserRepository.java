@@ -22,4 +22,6 @@ public interface UserRepository {
     Completable updateUserImage(String uid, Uri imageUri);
 
     Completable deleteProfilePhoto(String uid);
+
+    Single<Boolean> containsQuery(String field, String value);
 }
