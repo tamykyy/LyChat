@@ -4,7 +4,6 @@ buildscript {
         google()
         mavenCentral()
     }
-
     dependencies {
         classpath 'com.google.gms:google-services:4.3.15'
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.45'
@@ -12,7 +11,7 @@ buildscript {
 }
 
 plugins {
-    id 'com.android.application' version '7.4.1' apply false
-    id 'com.android.library' version '7.4.1' apply false
+    id 'com.android.application' version '7.4.2' apply false
+    id 'com.android.library' version '7.4.2' apply false
     id 'com.google.dagger.hilt.android' version '2.45' apply false
 }
