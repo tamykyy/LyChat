@@ -3,8 +3,8 @@ package edu.tamykyy.lychat.data.repository;
 import android.net.Uri;
 import android.util.Log;
 
-
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -120,6 +120,28 @@ public class UserRepositoryImpl implements UserRepository {
                 })
                 .addOnFailureListener(emitter::onError)
         );
+    }
+
+    @Override
+    public Observable<UserDomainModel> findUserQuery(String[] field, String value) {
+
+        return Observable.create(emitter -> {
+            Log.d("AAA", "Send query");
+            firebase.findUserViaFields(field, value)
+                    .addOnCompleteListener(task -> {
+                        Log.d("AAA", "founded");
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // founded user
+                                emitter.onNext(mapToDomain(Objects.requireNonNull(document.toObject(UserDataModel.class))));
+                            }
+                            emitter.onComplete();
+                        } else {
+                            Log.d("AAA", "Error getting documents: ", task.getException());
+                            emitter.onError(task.getException());
+                        }
+                    });
+        });
     }
 
     private Task<Uri> saveImage(UserDomainModel user) {

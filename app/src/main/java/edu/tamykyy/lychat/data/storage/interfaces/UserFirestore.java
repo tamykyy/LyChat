@@ -21,5 +21,7 @@ public interface UserFirestore {
     Task<Void> update(String uid, HashMap<String, Object> userMap);
 
     Task<QuerySnapshot> query(String field, String value);
+
+    Task<QuerySnapshot> findUserViaFields(String[] fields, String value);
 }
 

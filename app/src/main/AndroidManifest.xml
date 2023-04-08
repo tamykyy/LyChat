@@ -13,6 +13,13 @@
         android:theme="@style/Theme.LyChat"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.SearchActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".presentation.ChatActivity" />
+        </activity>
+        <activity
             android:name=".presentation.EditUsernameActivity"
             android:exported="false">
             <meta-data

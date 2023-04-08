@@ -73,10 +73,7 @@ public class ChatActivity extends AppCompatActivity {
         myBinding.toolbar.setNavigationOnClickListener(v -> myBinding.drawerLayout.open());
 
         myBinding.toolbar.setOnMenuItemClickListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.searchItem) {
-                Log.d("AAA", "search");
-            }
+            startActivity(new Intent(ChatActivity.this, SearchActivity.class));
             return true;
         });
 
@@ -98,6 +95,13 @@ public class ChatActivity extends AppCompatActivity {
 
             myBinding.drawerLayout.close();
             return false;
+        });
+
+        myBinding.navigationView.getHeaderView(0).findViewById(R.id.avatarImageView).setOnClickListener(v -> {
+            // open settings
+            startActivity(new Intent(ChatActivity.this, SettingsActivity.class)
+                    .putExtra("userProfile", userProfile));
+            myBinding.drawerLayout.close();
         });
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {

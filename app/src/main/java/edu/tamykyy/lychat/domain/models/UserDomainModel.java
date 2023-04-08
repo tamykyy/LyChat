@@ -6,6 +6,8 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import java.util.Objects;
+
 public class UserDomainModel implements Parcelable {
 
     private String firstName;
@@ -133,6 +135,19 @@ public class UserDomainModel implements Parcelable {
                 ", profilePicture=" + profilePicture +
                 ", userUID='" + userUID + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDomainModel that = (UserDomainModel) o;
+        return Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(phoneNumber, that.phoneNumber) && Objects.equals(username, that.username) && Objects.equals(email, that.email) && Objects.equals(password, that.password) && Objects.equals(profilePicture, that.profilePicture) && Objects.equals(userUID, that.userUID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, phoneNumber, username, email, password, profilePicture, userUID);
     }
 
     @Override

@@ -24,4 +24,6 @@ public interface UserRepository {
     Completable deleteProfilePhoto(String uid);
 
     Single<Boolean> containsQuery(String field, String value);
+
+    Observable<UserDomainModel> findUserQuery(String[] fields, String value);
 }
