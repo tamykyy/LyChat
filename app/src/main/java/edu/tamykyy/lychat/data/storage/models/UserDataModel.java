@@ -11,13 +11,15 @@ public class UserDataModel {
     private String profilePicture;
     private String userUID;
 
+    private String onlineInfo;
+
     public UserDataModel() {
     }
 
     public UserDataModel(String firstName, String lastName, String phoneNumber,
                          String username, String email, String password, String profilePicture,
-                         String userUID
-    ) {
+                         String userUID,
+                         String onlineInfo) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
@@ -26,6 +28,7 @@ public class UserDataModel {
         this.password = password;
         this.profilePicture = profilePicture;
         this.userUID = userUID;
+        this.onlineInfo = onlineInfo;
     }
 
     public String getFirstName() {
@@ -90,5 +93,13 @@ public class UserDataModel {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getOnlineInfo() {
+        return onlineInfo;
+    }
+
+    public void setOnlineInfo(String onlineInfo) {
+        this.onlineInfo = onlineInfo;
     }
 }

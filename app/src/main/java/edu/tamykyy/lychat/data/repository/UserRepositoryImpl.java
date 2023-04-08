@@ -163,6 +163,7 @@ public class UserRepositoryImpl implements UserRepository {
         Log.d("AAA", "userDomain profPic:" + userDomain.getProfilePicture());
         userData.setProfilePicture(userDomain.getProfilePicture().toString());
         userData.setUserUID(userDomain.getUserUID());
+        userData.setOnlineInfo(userDomain.getOnlineInfo());
         return userData;
     }
 
@@ -176,6 +177,7 @@ public class UserRepositoryImpl implements UserRepository {
         userDomain.setPassword(userData.getPassword());
         userDomain.setProfilePicture(Uri.parse(userData.getProfilePicture()));
         userDomain.setUserUID(userData.getUserUID());
+        userDomain.setOnlineInfo(userData.getOnlineInfo());
         return userDomain;
     }
 }

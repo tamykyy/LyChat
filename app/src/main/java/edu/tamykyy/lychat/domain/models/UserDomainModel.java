@@ -18,14 +18,15 @@ public class UserDomainModel implements Parcelable {
     private String password;
     private Uri profilePicture;
     private String userUID;
+    private String onlineInfo;
 
     public UserDomainModel() {
     }
 
     public UserDomainModel(String firstName, String lastName, String phoneNumber,
                            String username, String email, String password, Uri profilePicture,
-                           String userUID
-    ) {
+                           String userUID,
+                           String onlineInfo) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
@@ -34,7 +35,9 @@ public class UserDomainModel implements Parcelable {
         this.password = password;
         this.profilePicture = profilePicture;
         this.userUID = userUID;
+        this.onlineInfo = onlineInfo;
     }
+
 
     protected UserDomainModel(Parcel in) {
         firstName = in.readString();
@@ -45,6 +48,7 @@ public class UserDomainModel implements Parcelable {
         password = in.readString();
         profilePicture = Uri.parse(in.readString());
         userUID = in.readString();
+        onlineInfo = in.readString();
     }
 
     public static final Creator<UserDomainModel> CREATOR = new Creator<UserDomainModel>() {
@@ -123,6 +127,14 @@ public class UserDomainModel implements Parcelable {
         this.username = username;
     }
 
+    public String getOnlineInfo() {
+        return onlineInfo;
+    }
+
+    public void setOnlineInfo(String onlineInfo) {
+        this.onlineInfo = onlineInfo;
+    }
+
     @Override
     public String toString() {
         return "UserDomainModel{" +
@@ -134,6 +146,7 @@ public class UserDomainModel implements Parcelable {
                 ", password='" + password + '\'' +
                 ", profilePicture=" + profilePicture +
                 ", userUID='" + userUID + '\'' +
+                ", onlineInfo='" + onlineInfo + '\'' +
                 '}';
     }
 
@@ -165,5 +178,6 @@ public class UserDomainModel implements Parcelable {
         dest.writeString(password);
         dest.writeString(profilePicture.toString());
         dest.writeString(userUID);
+        dest.writeString(onlineInfo);
     }
 }
