@@ -11,13 +11,18 @@ import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.components.SingletonComponent;
 import edu.tamykyy.lychat.data.repository.AuthenticationRepositoryImpl;
+import edu.tamykyy.lychat.data.repository.ChatRepositoryImpl;
+import edu.tamykyy.lychat.data.repository.MessageRepositoryImpl;
 import edu.tamykyy.lychat.data.repository.UserLocalRepositoryImpl;
 import edu.tamykyy.lychat.data.repository.UserRepositoryImpl;
+import edu.tamykyy.lychat.data.storage.ChatFirestoreImpl;
+import edu.tamykyy.lychat.data.storage.MessageFirestoreImpl;
 import edu.tamykyy.lychat.data.storage.PhoneStorageImpl;
 import edu.tamykyy.lychat.data.storage.UserFirestoreImpl;
 import edu.tamykyy.lychat.data.storage.UserStorageImpl;
 import edu.tamykyy.lychat.data.storage.interfaces.PhoneStorage;
 import edu.tamykyy.lychat.domain.repository.AuthenticationRepository;
+import edu.tamykyy.lychat.domain.repository.ChatRepository;
 import edu.tamykyy.lychat.domain.repository.UserLocalRepository;
 import edu.tamykyy.lychat.domain.repository.UserRepository;
 
@@ -60,5 +65,30 @@ public class DataModule {
     @Singleton
     public UserLocalRepository provideUserLocalRepositoryImpl(PhoneStorage phoneStorage) {
         return new UserLocalRepositoryImpl(phoneStorage);
+    }
+
+    @Provides
+    @Singleton
+    public ChatFirestoreImpl provideChatFirestoreImpl(FirebaseFirestore firestore) {
+        return new ChatFirestoreImpl(firestore);
+    }
+
+    @Provides
+    @Singleton
+    public ChatRepository provideChatRepositoryImpl(ChatFirestoreImpl chatFirestore,
+                                                    MessageRepositoryImpl messageRepository) {
+        return new ChatRepositoryImpl(chatFirestore, messageRepository);
+    }
+
+    @Provides
+    @Singleton
+    public MessageFirestoreImpl provideMessageFirestoreImpl(FirebaseFirestore firestore) {
+        return new MessageFirestoreImpl(firestore);
+    }
+
+    @Provides
+    @Singleton
+    public MessageRepositoryImpl provideMessageRepositoryImpl(MessageFirestoreImpl messageFirestore) {
+        return new MessageRepositoryImpl(messageFirestore);
     }
 }

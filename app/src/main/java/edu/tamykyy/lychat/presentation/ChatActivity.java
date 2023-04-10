@@ -19,13 +19,18 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.tamykyy.lychat.R;
 import edu.tamykyy.lychat.databinding.ActivityChatBinding;
+import edu.tamykyy.lychat.domain.models.ChatDomainModel;
 import edu.tamykyy.lychat.domain.models.UserDomainModel;
-import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 @AndroidEntryPoint
 public class ChatActivity extends AppCompatActivity {
@@ -36,6 +41,8 @@ public class ChatActivity extends AppCompatActivity {
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private UserDomainModel userProfile;
+
+    private List<ChatDomainModel> userChatsList = new ArrayList<>();
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -51,12 +58,24 @@ public class ChatActivity extends AppCompatActivity {
         } else {
             Log.d("AAA", currentUser.getUid());
             // my view model get user profile
-            Disposable disposable = myViewModel.getUserProfileUpdates(currentUser.getUid()).subscribe(
-                    this::setUIUserData,
-                    throwable -> Log.d("AAA", "error: " + throwable.getMessage())
-            );
-            compositeDisposable.add(disposable);
+            Disposable disposableUpdates = myViewModel.getUserProfileUpdates(currentUser.getUid())
+                    .subscribe(
+                            this::setUIUserData,
+                            throwable -> Log.d("AAA", "error: " + throwable.getMessage())
+                    );
+            compositeDisposable.add(disposableUpdates);
+
+            Disposable disposableChats = myViewModel.getUsersChats(currentUser.getUid())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            userChatsList::add,
+                            throwable -> Log.d("AAA", throwable.getMessage()),
+                            this::showChats
+                    );
+            compositeDisposable.add(disposableChats);
         }
+
 
         myBinding.drawerLayout.setOnTouchListener(new SwipeListener(this) {
             @Override
@@ -111,6 +130,10 @@ public class ChatActivity extends AppCompatActivity {
             }
         };
         this.getOnBackPressedDispatcher().addCallback(this, callback);
+    }
+
+    private void showChats() {
+        Log.d("AAA", userChatsList.toString());
     }
 
     private void setUIUserData(UserDomainModel userProfile) {

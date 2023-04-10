@@ -18,7 +18,7 @@ import edu.tamykyy.lychat.domain.models.UserDomainModel;
 
 public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecyclerViewAdapter.RecyclerViewViewHolder> {
 
-    private List<UserDomainModel> userList;
+    private final List<UserDomainModel> userList;
 
     public SearchRecyclerViewAdapter(List<UserDomainModel> userList) {
         this.userList = userList;
@@ -41,6 +41,7 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
                 .load(currUser.getProfilePicture())
                 .into(holder.avatarImageView);
         holder.getNameTextView().setText(currUser.getFirstName() + " " + currUser.getLastName());
+        holder.getOnlineInfoTextView().setText(currUser.getOnlineInfo());
     }
 
     @Override
