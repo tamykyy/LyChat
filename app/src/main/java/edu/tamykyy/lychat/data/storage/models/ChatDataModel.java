@@ -6,19 +6,27 @@ import edu.tamykyy.lychat.domain.models.MessageDomainModel;
 
 public class ChatDataModel {
 
+    private String id;
     private String userUid1;
     private String userUid2;
-    private List<MessageDomainModel> messages;
     private String lastMessage;
 
     public ChatDataModel() {
     }
 
-    public ChatDataModel(String userUid1, String userUid2, List<MessageDomainModel> messages, String lastMessage) {
+    public ChatDataModel(String id, String userUid1, String userUid2, String lastMessage) {
+        this.id = id;
         this.userUid1 = userUid1;
         this.userUid2 = userUid2;
-        this.messages = messages;
         this.lastMessage = lastMessage;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUserUid1() {
@@ -37,29 +45,11 @@ public class ChatDataModel {
         this.userUid2 = userUid2;
     }
 
-    public List<MessageDomainModel> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<MessageDomainModel> messages) {
-        this.messages = messages;
-    }
-
     public String getLastMessage() {
         return lastMessage;
     }
 
     public void setLastMessage(String lastMessage) {
         this.lastMessage = lastMessage;
-    }
-
-    @Override
-    public String toString() {
-        return "ChatDomainModel{" +
-                "userUid1='" + userUid1 + '\'' +
-                ", userUid2='" + userUid2 + '\'' +
-                ", messages=" + messages +
-                ", lastMessage=" + lastMessage +
-                '}';
     }
 }
