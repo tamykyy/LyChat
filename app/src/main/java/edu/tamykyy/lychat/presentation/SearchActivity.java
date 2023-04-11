@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,6 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import edu.tamykyy.lychat.R;
 import edu.tamykyy.lychat.databinding.ActivitySearchBinding;
 import edu.tamykyy.lychat.domain.models.UserDomainModel;
+import edu.tamykyy.lychat.presentation.adapters.SearchItemClickListener;
 import edu.tamykyy.lychat.presentation.adapters.SearchRecyclerViewAdapter;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -28,7 +30,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 @AndroidEntryPoint
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity implements SearchItemClickListener {
 
     private ActivitySearchBinding myBinding;
     private SearchActivityViewModel myViewModel;
@@ -91,7 +93,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private void showUsers() {
         Log.d("AAA", Thread.currentThread().getName());
-        myBinding.usersRecyclerView.setAdapter(new SearchRecyclerViewAdapter(new ArrayList<>(userSet)));
+        myBinding.usersRecyclerView.setAdapter(new SearchRecyclerViewAdapter(new ArrayList<>(userSet), this));
         myBinding.usersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
@@ -106,8 +108,18 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onItemClick(View view, int position) {
+        UserDomainModel userDomainModel = new ArrayList<>(userSet).get(position);
+        startActivity(new Intent(this, DialogActivity.class)
+                .putExtra("user", userDomainModel));
+
+        Log.d("AAA", userDomainModel.toString());
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         compositeDisposable.dispose();
     }
+
 }

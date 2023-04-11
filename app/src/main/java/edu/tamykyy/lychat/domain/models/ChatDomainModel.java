@@ -4,19 +4,27 @@ import java.util.List;
 
 public class ChatDomainModel {
 
+    private String id;
     private String userUid1;
     private String userUid2;
-    private List<MessageDomainModel> messages;
     private MessageDomainModel lastMessage;
 
     public ChatDomainModel() {
     }
 
-    public ChatDomainModel(String userUid1, String userUid2, List<MessageDomainModel> messages, MessageDomainModel lastMessage) {
+    public ChatDomainModel(String id, String userUid1, String userUid2, MessageDomainModel lastMessage) {
+        this.id = id;
         this.userUid1 = userUid1;
         this.userUid2 = userUid2;
-        this.messages = messages;
         this.lastMessage = lastMessage;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUserUid1() {
@@ -35,14 +43,6 @@ public class ChatDomainModel {
         this.userUid2 = userUid2;
     }
 
-    public List<MessageDomainModel> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<MessageDomainModel> messages) {
-        this.messages = messages;
-    }
-
     public MessageDomainModel getLastMessage() {
         return lastMessage;
     }
@@ -54,11 +54,10 @@ public class ChatDomainModel {
     @Override
     public String toString() {
         return "ChatDomainModel{" +
-                "userUid1='" + userUid1 + '\'' +
+                "id='" + id + '\'' +
+                ", userUid1='" + userUid1 + '\'' +
                 ", userUid2='" + userUid2 + '\'' +
-                ", messages=" + messages +
                 ", lastMessage=" + lastMessage +
                 '}';
     }
-
 }

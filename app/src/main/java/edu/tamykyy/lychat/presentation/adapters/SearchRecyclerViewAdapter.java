@@ -1,5 +1,6 @@
 package edu.tamykyy.lychat.presentation.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +20,11 @@ import edu.tamykyy.lychat.domain.models.UserDomainModel;
 public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecyclerViewAdapter.RecyclerViewViewHolder> {
 
     private final List<UserDomainModel> userList;
+    private final SearchItemClickListener onItemClickListener;
 
-    public SearchRecyclerViewAdapter(List<UserDomainModel> userList) {
+    public SearchRecyclerViewAdapter(List<UserDomainModel> userList, SearchItemClickListener onItemClickListener) {
         this.userList = userList;
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -30,7 +33,7 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.search_user_item_resycler_view, parent, false);
 
-        return new RecyclerViewViewHolder(view);
+        return new RecyclerViewViewHolder(view, onItemClickListener);
     }
 
     @Override
@@ -56,12 +59,20 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
         private final TextView onlineInfoTextView;
 
 
-        public RecyclerViewViewHolder(@NonNull View itemView) {
+        public RecyclerViewViewHolder(@NonNull View itemView, SearchItemClickListener onItemClickListener) {
             super(itemView);
 
             avatarImageView = itemView.findViewById(R.id.avatarImageView);
             nameTextView = itemView.findViewById(R.id.nameTextView);
             onlineInfoTextView = itemView.findViewById(R.id.onlineInfoTextView);
+
+            itemView.setOnClickListener(v -> {
+                if (onItemClickListener != null) {
+                    if (getBindingAdapterPosition() != RecyclerView.NO_POSITION) {
+                        onItemClickListener.onItemClick(v, getBindingAdapterPosition());
+                    }
+                }
+            });
         }
 
         public ImageView getAvatarImageView() {
